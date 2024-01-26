@@ -14,5 +14,16 @@ const eventSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+//middleware to update event privacy based on assicated community privacy
+eventSchema.pre("save", async function (next) {
+  try {
+    await this.populate("community").execPopulate();
+
+    this.isPrivate = this.community.isPrivate;
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = mongoose.model("Event", eventSchema);
