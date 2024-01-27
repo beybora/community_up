@@ -1,0 +1,11 @@
+.login {
+  padding: 50px;
+  border-style: dashed;
+  border-radius: 25px;                                          
+}
+
+.login-form {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+}
