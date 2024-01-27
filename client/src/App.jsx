@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 function App() {
   return (
-    <>
+    <div className="App">
       <header></header>
       <main>
         <Routes>
@@ -11,7 +11,7 @@ function App() {
         </Routes>
       </main>
       <footer></footer>
-    </>
+    </div>
   );
 }
 
