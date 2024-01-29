@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("becrypt");
 
 const userSchema = new mongoose.Schema(
   {
@@ -15,5 +16,20 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+userSchema.path("email").validate(async () => {
+    const isEmailUnique = await mongoose.m
+});
+
+userSchema.pre("save", async function (next) {
+  try {
+    const hashedPassword = await becrypt.has(this.password, 10);
+    this.password = hashedPassword;
+    next();
+  } catch (error) {
+    console.error(error);
+  }
+});
+
 
 module.exports = mongoose.model("User", userSchema);
