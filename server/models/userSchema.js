@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bcrypt = require("becrypt");
+const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
   {
@@ -23,10 +23,10 @@ userSchema.path("email").validate(async (value) => {
   return !isEmailUnique
 }, 'email already exists');
 
-//safe password encyrptet via becrypt
+//safe password encyrptet via bcrypt
 userSchema.pre("save", async function (next) {
   try {
-    const hashedPassword = await becrypt.has(this.password, 10);
+    const hashedPassword = await bcrypt.hash(this.password, 10);
     this.password = hashedPassword;
     next();
   } catch (error) {
