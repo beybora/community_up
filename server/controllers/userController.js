@@ -1,15 +1,9 @@
 const User = require("../models/userSchema");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const SECRET = process.env.JWT_SECRET;
 
-exports.createUser = async (req, res) => {
-  try {
-    const newUser = await User.create(req.body);
-    res.status(201).json(newUser);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-exports.getAllUsers = async (req, res) => {
+const getAllUsers = async (req, res) => {
   try {
     const allUsers = await User.find();
     res.status(200).json(allUsers);
@@ -18,7 +12,7 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-exports.getUserById = async (req, res) => {
+const getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     if (!user) {
@@ -30,7 +24,7 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-exports.updateUserById = async (req, res) => {
+const updateUserById = async (req, res) => {
   try {
     const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -44,7 +38,7 @@ exports.updateUserById = async (req, res) => {
   }
 };
 
-exports.deleteUserById = async (req, res) => {
+const deleteUserById = async (req, res) => {
   try {
     const deletedUser = await User.findByIdAndDelete(req.params.id);
     if (!deletedUser) {
@@ -56,7 +50,7 @@ exports.deleteUserById = async (req, res) => {
   }
 };
 
-exports.getUsersInCommunity = async (req, res) => {
+const getUsersInCommunity = async (req, res) => {
   try {
     const communityId = req.params.communityId;
     const usersInCommunity = await User.find({ communities: communityId });
@@ -66,13 +60,89 @@ exports.getUsersInCommunity = async (req, res) => {
   }
 };
 
-exports.getUsersInEvent = async (req, res) => {
+const getUsersInEvent = async (req, res) => {
   try {
     const eventId = req.params.eventId;
     const usersInEvent = await User.find({ events: eventId });
-
     res.status(200).json(usersInEvent);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+};
+
+const register = async (req, res) => {
+  console.log(req.body);
+  try {
+    const userDoc = await User.create(req.body);
+    const userPayload = {
+      _id: userDoc._id,
+      email: userDoc.email,
+      username: userDoc.username,
+    };
+    console.log(SECRET);
+    const userToken = jwt.sign(userPayload, SECRET);
+    res
+      .status(201)
+      .cookie("accessToken", userToken, { httpOnly: true })
+      .json({ message: "user created", user: userPayload });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    res.status(400).json({ error: "invalid login attempt" });
+  } else {
+    const userDoc = await User.findOne({ email });
+    res.status(200).json({ user: userDoc });
+    if (!userDoc) {
+      res.status(400).json({ error: "invalid login attempt" });
+    } else {
+      // user with 'email' found
+      const isPasswordValid = await bcrypt.compare(password, userDoc.password);
+      if (!isPasswordValid) {
+        res.status(400).json({ error: "invalid login attempt" });
+      } else {
+        const userPayload = {
+          _id: userDoc._id,
+          email: userDoc.email,
+          username: userDoc.username,
+        };
+        const userToken = jwt.sign(userPayload, SECRET, { expiresIn: '1h'  });
+        res
+          .status(201)
+          .cookie("accessToken", userToken, { httpOnly: true })
+          .json({ message: "user created", user: userPayload });
+      }
+    }
+  }
+};
+
+const logout = async (req, res) => {
+  res.clearCookie("accessToken");
+  res.json({message: "successfully loged out"})
+};
+
+const getLogged = async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.user_id }).select(-password);
+    res.json({ user });
+  } catch (error) {
+    res.status(400).json({ message: error.message })
+  }
+};
+
+module.exports = {
+  getAllUsers,
+  getUserById,
+  updateUserById,
+  deleteUserById,
+  getUsersInCommunity,
+  getUsersInEvent,
+  register,
+  login,
+  logout,
+  getLogged,
 };

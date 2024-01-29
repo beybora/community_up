@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
   {
@@ -15,5 +16,23 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+//check if email is unique to collection
+userSchema.path("email").validate(async (value) => {
+  const isEmailUnique = await mongoose.models.User.countDocuments({ email: value });
+  return !isEmailUnique
+}, 'email already exists');
+
+//safe password encyrptet via bcrypt
+userSchema.pre("save", async function (next) {
+  try {
+    const hashedPassword = await bcrypt.hash(this.password, 10);
+    this.password = hashedPassword;
+    next();
+  } catch (error) {
+    console.error(error);
+  }
+});
+
 
 module.exports = mongoose.model("User", userSchema);
