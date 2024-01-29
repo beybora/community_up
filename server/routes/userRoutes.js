@@ -7,7 +7,6 @@ router.post("/register", userController.register);
 router.post("/login", userController.login);
 router.post("/logout", userController.logout);
 router.post("/currentUser", authenticate, userController.getLogged);
-router.post("/users", userController.createUser);
 router.get("/users", userController.getAllUsers);
 router.get("/users/:id", userController.getUserById);
 router.put("/users/:id", userController.updateUserById);
