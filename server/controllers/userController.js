@@ -135,7 +135,6 @@ const getLogged = async (req, res) => {
 };
 
 module.exports = {
-  createUser,
   getAllUsers,
   getUserById,
   updateUserById,
