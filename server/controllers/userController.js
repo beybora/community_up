@@ -1,6 +1,9 @@
 const User = require("../models/userSchema");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const SECRET = process.env.JWT_SECRET;
 
-exports.createUser = async (req, res) => {
+const createUser = async (req, res) => {
   try {
     const newUser = await User.create(req.body);
     res.status(201).json(newUser);
@@ -9,7 +12,7 @@ exports.createUser = async (req, res) => {
   }
 };
 
-exports.getAllUsers = async (req, res) => {
+const getAllUsers = async (req, res) => {
   try {
     const allUsers = await User.find();
     res.status(200).json(allUsers);
@@ -18,7 +21,7 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-exports.getUserById = async (req, res) => {
+const getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     if (!user) {
@@ -30,7 +33,7 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-exports.updateUserById = async (req, res) => {
+const updateUserById = async (req, res) => {
   try {
     const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
@@ -44,7 +47,7 @@ exports.updateUserById = async (req, res) => {
   }
 };
 
-exports.deleteUserById = async (req, res) => {
+const deleteUserById = async (req, res) => {
   try {
     const deletedUser = await User.findByIdAndDelete(req.params.id);
     if (!deletedUser) {
@@ -56,7 +59,7 @@ exports.deleteUserById = async (req, res) => {
   }
 };
 
-exports.getUsersInCommunity = async (req, res) => {
+const getUsersInCommunity = async (req, res) => {
   try {
     const communityId = req.params.communityId;
     const usersInCommunity = await User.find({ communities: communityId });
@@ -66,13 +69,31 @@ exports.getUsersInCommunity = async (req, res) => {
   }
 };
 
-exports.getUsersInEvent = async (req, res) => {
+const getUsersInEvent = async (req, res) => {
   try {
     const eventId = req.params.eventId;
     const usersInEvent = await User.find({ events: eventId });
-
     res.status(200).json(usersInEvent);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+};
+
+const register = (req, res) => {};
+const login = (req, res) => {};
+const logout = (req, res) => {};
+const getLogged = (req, res) => {};
+
+module.exports = {
+  createUser,
+  getAllUsers,
+  getUserById,
+  updateUserById,
+  deleteUserById,
+  getUsersInCommunity,
+  getUsersInEvent,
+  register,
+  login,
+  logout,
+  getLogged,
 };
