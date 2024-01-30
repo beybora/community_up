@@ -9,3 +9,12 @@
     gap: 10px;
     flex-direction: column;
 }
+
+.success-message {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 5px;
+  text-align: center;
+}
