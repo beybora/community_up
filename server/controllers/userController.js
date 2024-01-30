@@ -84,7 +84,7 @@ const register = async (req, res) => {
     res
       .status(201)
       .cookie("accessToken", userToken, { httpOnly: true })
-      .json({ message: "user created", user: userPayload });
+      .json({ message: "User created", user: userPayload });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -93,28 +93,28 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    res.status(400).json({ error: "invalid login attempt" });
+    res.status(400).json({ error: "Invalid login attempt" });
   } else {
     const userDoc = await User.findOne({ email });
-    res.status(200).json({ user: userDoc });
+
     if (!userDoc) {
-      res.status(400).json({ error: "invalid login attempt" });
+      res.status(400).json({ error: "Invalid login attempt" });
     } else {
       // user with 'email' found
       const isPasswordValid = await bcrypt.compare(password, userDoc.password);
       if (!isPasswordValid) {
-        res.status(400).json({ error: "invalid login attempt" });
+        res.status(400).json({ error: "Invalid login attempt" });
       } else {
         const userPayload = {
           _id: userDoc._id,
           email: userDoc.email,
           username: userDoc.username,
         };
-        const userToken = jwt.sign(userPayload, SECRET, { expiresIn: '1h'  });
+        const userToken = jwt.sign(userPayload, SECRET, { expiresIn: "1h" });
         res
           .status(201)
           .cookie("accessToken", userToken, { httpOnly: true })
-          .json({ message: "user created", user: userPayload });
+          .json({ message: "User logged in", user: userPayload });
       }
     }
   }
@@ -122,15 +122,15 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
   res.clearCookie("accessToken");
-  res.json({message: "successfully loged out"})
+  res.json({ message: "successfully loged out" });
 };
 
 const getLogged = async (req, res) => {
   try {
-    const user = await User.findOne({ _id: req.user_id }).select(-password);
-    res.json({ user });
+    const user = await User.findById(req.user._id);
+    res.json({ _id: user._id, email: user.email, username: user.username });
   } catch (error) {
-    res.status(400).json({ message: error.message })
+    res.status(400).json({ message: error.message });
   }
 };
 
