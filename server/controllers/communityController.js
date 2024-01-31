@@ -1,13 +1,31 @@
 const Community = require("../models/communitySchema");
+const Place = require("../models/placeSchema");
 
 const createCommunity = async (req, res) => {
   try {
-    const newCommunity = await Community.create(req.body);
+    const { name, description, isPrivate, location } = req.body;
+
+    // Create the community
+    const newCommunity = await Community.create({
+      name,
+      description,
+      isPrivate,
+      location: location,
+    });
+
+    // Update the communities array in the associated plac
+    await Place.findByIdAndUpdate(
+      location,
+      { $push: { communities: newCommunity._id } }, // Add the new community to the communities array
+      { new: true }
+    );
+
     res.status(201).json(newCommunity);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 const getAllCommunities = async (req, res) => {
   try {
