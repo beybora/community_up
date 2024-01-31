@@ -8,7 +8,7 @@ router.post("/login", userController.login);
 router.post("/logout", userController.logout);
 router.get("/currentUser", authenticate, userController.getLoggedUser);
 router.get("/", userController.getAllUsers);
-router.get("/search", userController.searchUser);
+//router.get("/search", userController.searchUser);
 router.get("/:id", userController.getUserById);
 router.put("/:id", userController.updateUserById);
 router.delete("/:id", userController.deleteUserById);
