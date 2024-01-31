@@ -4,6 +4,12 @@ const cors = require('cors');
 const connectDB = require("./config/db");
 const cookieParser = require("cookie-parser");
 const userRouter = require("./routes/userRoutes");
+const chatRoutes = require("./routes/chatRoutes");
+const communtieRoutes = require("./routes/communtieRoutes");
+const groupRoutes = require("./routes/groupRoutes");
+const placeRoutes = require("./routes/placeRoutes");
+const eventRoutes = require("./routes/eventRoutes");
+const messageRoutes = require("./routes/messageRoutes");
 
 const app = express();
 
@@ -14,6 +20,13 @@ app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
 
 // Routes
 app.use("/users", userRouter);
+app.use("/chat", chatRoutes);
+app.use("/communitie", communtieRoutes)
+app.use("/group", groupRoutes);
+app.use("/places", placeRoutes);
+app.use("/events", eventRoutes);
+app.use("/messages", messageRoutes);
+
 
 // Database connection
 connectDB()
