@@ -6,9 +6,12 @@ const groupSchema = new mongoose.Schema(
     description: { type: String, default: null },
     members: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     events: [{ type: mongoose.Schema.Types.ObjectId, ref: "Event" }],
-    chat: [{ type: mongoose.Schema.Types.ObjectId, ref: "Chat" }],
+    chat: { type: mongoose.Schema.Types.ObjectId, ref: "Chat" },
+    community: { type: mongoose.Schema.Types.ObjectId, ref: "Community" },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Group", groupSchema);
+const Group = mongoose.model("Group", groupSchema);
+
+module.exports = Group;

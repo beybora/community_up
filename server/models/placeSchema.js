@@ -9,4 +9,6 @@ const placeSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Place", placeSchema);
+const Place = mongoose.model("Place", placeSchema);
+
+module.exports = Place;
