@@ -70,6 +70,24 @@ const getUsersInEvent = async (req, res) => {
   }
 };
 
+// const searchUser = async (req, res) => {
+//   try {
+//     const keyword = req.query.search
+//       ? {
+//           $or: [
+//             { name: { $regex: req.query.search, $options: "i" } },
+//             { email: { $regex: req.query.search, $options: "i" } },
+//           ],
+//         }
+//       : {};
+    
+//     const users = await User.find(keyword).select({ _id: { $ne: req.user._id } })
+//     res.send(users);
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
+
 const register = async (req, res) => {
   console.log(req.body);
   try {
@@ -147,6 +165,7 @@ module.exports = {
   deleteUserById,
   getUsersInCommunity,
   getUsersInEvent,
+  // searchUser,
   register,
   login,
   logout,

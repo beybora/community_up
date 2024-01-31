@@ -7,6 +7,8 @@ const authenticate = require("../middleware/auth");
 router.get("/place/:placeId", communityController.getCommunitiesByPlace);
 //middleware to request authentication for using routes below
 //router.use(authenticate);
+// //middleware to request authentication for using routes below
+// router.use(authenticate);
 router.post("/create", communityController.createCommunity);
 router.get("/", communityController.getAllCommunities);
 router.get("/:id", communityController.getCommunityById);
