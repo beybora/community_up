@@ -1,11 +1,11 @@
 const Community = require("../models/communitySchema");
 const Place = require("../models/placeSchema");
+const User = require("../models/userSchema");
 
 const createCommunity = async (req, res) => {
   try {
     const { name, description, isPrivate, location } = req.body;
 
-    // Create the community
     const newCommunity = await Community.create({
       name,
       description,
@@ -13,10 +13,9 @@ const createCommunity = async (req, res) => {
       location: location,
     });
 
-    // Update the communities array in the associated plac
     await Place.findByIdAndUpdate(
       location,
-      { $push: { communities: newCommunity._id } }, // Add the new community to the communities array
+      { $push: { communities: newCommunity._id } },
       { new: true }
     );
 
@@ -25,7 +24,6 @@ const createCommunity = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 
 const getAllCommunities = async (req, res) => {
   try {
@@ -88,6 +86,29 @@ const getCommunitiesByPlace = async (req, res) => {
   }
 };
 
+const joinCommunity = async (req, res) => {
+  try {
+    const { userId, communityId } = req.body;
+
+    await Community.findByIdAndUpdate(
+      communityId,
+      { $addToSet: { members: userId } },
+      { new: true }
+    );
+
+    await User.findByIdAndUpdate(
+      userId,
+      { $addToSet: { communities: communityId } },
+      { new: true }
+    );
+
+    res.status(200).json({ message: "User joined community successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 module.exports = {
   createCommunity,
   getAllCommunities,
@@ -95,4 +116,5 @@ module.exports = {
   updateCommunityById,
   deleteCommunityById,
   getCommunitiesByPlace,
+  joinCommunity,
 };
