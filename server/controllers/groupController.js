@@ -1,6 +1,7 @@
 const Chat = require("../models/chatSchema");
 const Community = require("../models/communitySchema");
 const Group = require("../models/groupSchema");
+const User = require("../models/userSchema");
 
 const getAllGroups = async (req, res) => {
   try {
@@ -30,47 +31,38 @@ const getGroupById = async (req, res) => {
   }
 };
 
-const createGroup = async (req, res) => {
+const createGroupAndAddToCommunity = async (req, res) => {
   try {
-    const { name, description, community } = req.body;
+    const { name, description, communityId } = req.body;
 
-    // Create the group
     const newGroup = await Group.create({
       name,
       description,
-      community: community,
+      community: communityId,
     });
-    
-    // Update the groups array in the associated community
-    console.log("community", community)
+
     const updatedCommunity = await Community.findByIdAndUpdate(
-      community,
+      communityId,
       { $push: { groups: newGroup._id } },
       { new: true }
     );
 
-    console.log("updatedCommunity", community)
-
-    // Make sure the community is updated successfully
     if (!updatedCommunity) {
       throw new Error("Community not found or not updated.");
     }
 
-    // Create a chat for the group
     const newChat = await Chat.create({
       name: `${newGroup.name} Chat`,
       isGroupChat: true,
       group: newGroup._id,
     });
 
-    // Update the chatId in the group
     await Group.findByIdAndUpdate(
       newGroup._id,
       { chat: newChat._id },
       { new: true }
     );
 
-    // Update the groupId in the chat
     await Chat.findByIdAndUpdate(
       newChat._id,
       { group: newGroup._id },
@@ -154,13 +146,51 @@ const getGroupsByMember = async (req, res) => {
   }
 };
 
+const joinGroup = async (req, res) => {
+  try {
+    const { userId, groupId, communities } = req.body;
+
+   const group = await Group.findById(groupId);
+
+    // Check if the user is a member of the community associated with the group
+    const isUserInCommunity = communities.includes(group.community.toString());
+    if (!isUserInCommunity) {
+      return res
+        .status(403)
+        .json({ message: "User is not a member of the community" });
+    }
+
+    if (!group) {
+      return res.status(404).json({ message: "Group not found" });
+    }
+
+    await Group.findByIdAndUpdate(
+      groupId,
+      { $addToSet: { members: userId } },
+      { new: true }
+    );
+
+    await User.findByIdAndUpdate(
+      userId,
+      { $addToSet: { groups: groupId } },
+      { new: true }
+    );
+
+    res.status(200).json({ message: "User joined group successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 module.exports = {
   getAllGroups,
   getGroupById,
-  createGroup,
+  createGroupAndAddToCommunity,
   updateGroupById,
   deleteGroupById,
   getPublicGroups,
   getGroupsByCommunity,
   getGroupsByMember,
+  joinGroup,
 };
