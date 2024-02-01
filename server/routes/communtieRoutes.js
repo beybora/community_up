@@ -12,5 +12,6 @@ router.get("/", communityController.getAllCommunities);
 router.get("/:id", communityController.getCommunityById);
 router.put("/:id", communityController.updateCommunityById);
 router.delete("/:id", communityController.deleteCommunityById);
+router.post("/join-community", communityController.joinCommunity);
 
 module.exports = router;
