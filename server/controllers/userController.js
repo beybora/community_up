@@ -89,13 +89,13 @@ const getUsersInEvent = async (req, res) => {
 // };
 
 const register = async (req, res) => {
-  console.log(req.body);
   try {
     const userDoc = await User.create(req.body);
     const userPayload = {
       _id: userDoc._id,
       email: userDoc.email,
       username: userDoc.username,
+      location: userDoc.location
     };
     const userToken = jwt.sign(userPayload, SECRET);
     res
