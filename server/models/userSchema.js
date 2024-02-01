@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     registrationDate: { type: Date, default: Date.now },
     isAdmin: { type: Boolean, default: false },
-    currentLocation: { type: mongoose.Schema.Types.ObjectId, ref: "Place" },
+    location: { type: mongoose.Schema.Types.ObjectId, ref: "Place" },
     communities: [{ type: mongoose.Schema.Types.ObjectId, ref: "Community" }],
     groups: [{ type: mongoose.Schema.Types.ObjectId, ref: "Group" }],
     events: [{ type: mongoose.Schema.Types.ObjectId, ref: "Event" }],
