@@ -76,9 +76,9 @@ const deleteCommunityById = async (req, res) => {
 
 const getCommunitiesByPlace = async (req, res) => {
   try {
-    const placeId = req.params.placeId;
-
-    const communitiesInPlace = await Community.find({ location: placeId });
+    const userLocationId = req.user.location;
+    
+    const communitiesInPlace = await Community.find({ location: userLocationId });
 
     res.status(200).json(communitiesInPlace);
   } catch (error) {

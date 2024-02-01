@@ -131,6 +131,7 @@ const login = async (req, res) => {
       _id: userDoc._id,
       email: userDoc.email,
       username: userDoc.username,
+      location: userDoc.location
     };
 
     const userToken = jwt.sign(userPayload, SECRET, { expiresIn: "1h" });
