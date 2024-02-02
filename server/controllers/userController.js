@@ -158,6 +158,42 @@ const getLoggedUser = async (req, res) => {
   }
 };
 
+const getJoinedCommunities = async (req, res) => {
+  try {
+    const userId = req.user._id; 
+    const user = await User.findById(userId).populate('communities');
+    
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json(user.communities);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+const getJoinedGroups = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const communityId = req.params.communityId; 
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const groups = await Group.find({
+      _id: { $in: user.groups },
+      community: communityId,
+    });
+
+    res.status(200).json(groups);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUserById,
@@ -170,4 +206,6 @@ module.exports = {
   login,
   logout,
   getLoggedUser,
+  getJoinedCommunities,
+  getJoinedGroups
 };
