@@ -120,7 +120,7 @@ const getPublicGroups = async (req, res) => {
 
 const getGroupsByCommunity = async (req, res) => {
   try {
-    const community = req.params.communityId;
+    const { community } = req.body;
     const groupsInCommunity = await Group.find({ community: community })
       .populate("members")
       .populate("events")
@@ -147,21 +147,31 @@ const getGroupsByMember = async (req, res) => {
 };
 
 const joinGroup = async (req, res) => {
-  const groupId = req.params.groupId;
-  const { _id } = req.user;
-
   try {
-    const group = await Group.findById(groupId);
-    //TODO CHECK IF USER IS MEMBER OF THE COMMUNITY THAT HES TRYING TO ACCESS
+    const { userId, groupId, communities } = req.body;
 
-    const updatedGroup = await Group.findByIdAndUpdate(
+   const group = await Group.findById(groupId);
+
+    // Check if the user is a member of the community associated with the group
+    const isUserInCommunity = communities.includes(group.community.toString());
+    if (!isUserInCommunity) {
+      return res
+        .status(403)
+        .json({ message: "User is not a member of the community" });
+    }
+
+    if (!group) {
+      return res.status(404).json({ message: "Group not found" });
+    }
+
+    await Group.findByIdAndUpdate(
       groupId,
-      { $addToSet: { members: _id } },
+      { $addToSet: { members: userId } },
       { new: true }
     );
 
-    const updatedUser = await User.findByIdAndUpdate(
-      _id,
+    await User.findByIdAndUpdate(
+      userId,
       { $addToSet: { groups: groupId } },
       { new: true }
     );
@@ -171,6 +181,7 @@ const joinGroup = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 module.exports = {
   getAllGroups,
