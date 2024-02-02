@@ -1,6 +1,7 @@
 const User = require("../models/userSchema");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const Group = require("../models/groupSchema");
 const SECRET = process.env.JWT_SECRET;
 
 const getAllUsers = async (req, res) => {
@@ -160,6 +161,8 @@ const getLoggedUser = async (req, res) => {
 };
 
 const getJoinedCommunities = async (req, res) => {
+
+  console.log(req.user);
   try {
     const userId = req.user._id; 
     const user = await User.findById(userId).populate('communities');
@@ -195,6 +198,27 @@ const getJoinedGroups = async (req, res) => {
   }
 };
 
+const getAllUserGroups = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Fetch all groups where the user is a member
+    const groups = await Group.find({
+      _id: { $in: user.groups },
+    });
+
+    res.status(200).json(groups);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 module.exports = {
   getAllUsers,
   getUserById,
@@ -208,5 +232,6 @@ module.exports = {
   logout,
   getLoggedUser,
   getJoinedCommunities,
-  getJoinedGroups
+  getJoinedGroups,
+  getAllUserGroups,
 };

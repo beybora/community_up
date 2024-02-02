@@ -15,4 +15,4 @@ router.get("/groups-by-community/:communityId", groupController.getGroupsByCommu
 router.get("/groups-by-member/:memberId", groupController.getGroupsByMember);
 router.post("/join-group/:groupId", groupController.joinGroup);
 
-module.exports = router;
+module.exports = router; 

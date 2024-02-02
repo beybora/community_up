@@ -119,13 +119,15 @@ const getPublicGroups = async (req, res) => {
 };
 
 const getGroupsByCommunity = async (req, res) => {
+  console.log("test");
   try {
-    const { community } = req.body;
-    const groupsInCommunity = await Group.find({ community: community })
+    const communityId = req.params.communityId;
+    console.log(communityId, "id");
+    const groupsInCommunity = await Group.find({ community: communityId })
       .populate("members")
       .populate("events")
       .populate("chat");
-
+  console.log(groupsInCommunity, "groupsInCommunity");
     res.status(200).json(groupsInCommunity);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -150,7 +152,7 @@ const joinGroup = async (req, res) => {
   try {
     const { userId, groupId, communities } = req.body;
 
-   const group = await Group.findById(groupId);
+    const group = await Group.findById(groupId);
 
     // Check if the user is a member of the community associated with the group
     const isUserInCommunity = communities.includes(group.community.toString());
@@ -181,7 +183,6 @@ const joinGroup = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 
 module.exports = {
   getAllGroups,
