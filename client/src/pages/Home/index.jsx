@@ -5,7 +5,6 @@ const Home = () => {
   const [communities, setCommunities] = useState([]);
   const [groups, setGroups] = useState([]);
   const [selectedCommunity, setSelectedCommunity] = useState(null);
-  const [selectedGroup, setSelectedGroup] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [newGroupName, setNewGroupName] = useState("");
   const [newGroupDescription, setNewGroupDescription] = useState("");
@@ -36,7 +35,6 @@ const Home = () => {
   };
 
   const handleGroupClick = (group) => {
-    setSelectedGroup(group);
     axios
       .post(`group/join-group/${group._id}`)
       .then(() => {
