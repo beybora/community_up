@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 
-const BrowserSection = ({ data, onSelect }) => {
-    console.log("test", data)
+const BrowseSection = ({ data, onSelect }) => {
   return (
-    <div className="browser-section">
+    <div className="browse-section">
+      <h2>All Communities</h2>
       <ul>
         {data.map((item) => (
           <li key={item._id} onClick={() => onSelect(item)}>
@@ -16,4 +16,4 @@ const BrowserSection = ({ data, onSelect }) => {
   );
 };
 
-export default BrowserSection;
+export default BrowseSection;
