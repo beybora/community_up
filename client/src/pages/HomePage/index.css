@@ -1,0 +1,11 @@
+.home-page {
+    display: flex;
+    gap: 25px;
+    justify-content: space-between;
+}
+
+.home-page__joined-groups-and-communities {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
