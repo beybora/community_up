@@ -14,7 +14,6 @@ const HomePage = () => {
   const [groups, setGroups] = useState([]);
   const [isCommunitySelected, setIsCommunitySelected] = useState(false);
 
-  // Fetch communities on component mount
   useEffect(() => {
     const fetchCommunities = async () => {
       try {
@@ -28,7 +27,6 @@ const HomePage = () => {
     fetchCommunities();
   }, []);
 
-  // Fetch groups when a community is selected
   useEffect(() => {
     const fetchGroupsByCommunity = async () => {
       if (selectedCommunity) {
@@ -48,9 +46,7 @@ const HomePage = () => {
   }, [selectedCommunity]);
 
   const handleSelect = (item) => {
-    console.log("test, item", item);
     if (item.hasOwnProperty("groups")) {
-      console.log("does it?", item);
       setSelectedCommunity(item);
       setIsCommunitySelected(true);
       setSelectedGroup(null);
@@ -80,7 +76,7 @@ const HomePage = () => {
           onSelect={handleSelect}
         />
       </div>
-
+      
       <div className="home-page__joined-groups-and-communities">
         <MyCommunitiesGroups
           communityId={selectedCommunity ? selectedCommunity._id : null}

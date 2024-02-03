@@ -14,7 +14,6 @@ const MyCommunities = ({ onSelectCommunity }) => {
         console.log('Error fetching joined communities', error);
       }
     };
-
     fetchJoinedCommunities();
   }, []);
 
