@@ -4,17 +4,25 @@ const User = require("../models/userSchema");
 
 const createCommunity = async (req, res) => {
   try {
-    const { name, description, isPrivate, location } = req.body;
+    const { name, description, isPrivate } = req.body;
+    const { location, _id } = req.user;
 
     const newCommunity = await Community.create({
       name,
       description,
       isPrivate,
       location: location,
+      members: [_id],
     });
 
     await Place.findByIdAndUpdate(
       location,
+      { $push: { communities: newCommunity._id } },
+      { new: true }
+    );
+
+    await User.findByIdAndUpdate(
+      _id,
       { $push: { communities: newCommunity._id } },
       { new: true }
     );
@@ -88,7 +96,11 @@ const getCommunitiesByPlace = async (req, res) => {
 
 const joinCommunity = async (req, res) => {
   try {
-    const { userId, communityId } = req.body;
+    const communityId = req.params.id;
+    const userId = req.user._id;
+
+    console.log("userId", userId);
+    console.log("communityId", communityId);
 
     await Community.findByIdAndUpdate(
       communityId,
@@ -108,6 +120,25 @@ const joinCommunity = async (req, res) => {
   }
 };
 
+const getJoinedCommunities = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const joinedCommunities = await Community.find({
+      _id: { $in: user.communities },
+    });
+
+    res.status(200).json(joinedCommunities);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 module.exports = {
   createCommunity,
@@ -117,4 +148,5 @@ module.exports = {
   deleteCommunityById,
   getCommunitiesByPlace,
   joinCommunity,
+  getJoinedCommunities,
 };
