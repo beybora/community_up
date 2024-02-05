@@ -8,9 +8,13 @@ router.use(authenticate);
 router.get("/place", communityController.getCommunitiesByPlace);
 router.post("/create", communityController.createCommunity);
 router.get("/", communityController.getAllCommunities);
+router.get("/get-joined-communities", communityController.getJoinedCommunities);
 router.get("/:id", communityController.getCommunityById);
 router.put("/:id", communityController.updateCommunityById);
 router.delete("/:id", communityController.deleteCommunityById);
-router.post("/join-community", communityController.joinCommunity);
+router.post("/join-community/:id", communityController.joinCommunity);
+
 
 module.exports = router;
+
+   

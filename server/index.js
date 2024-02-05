@@ -21,7 +21,7 @@ app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
 // Routes
 app.use("/users", userRouter);
 app.use("/chat", chatRoutes);
-app.use("/communitie", communtieRoutes)
+app.use("/community", communtieRoutes)
 app.use("/group", groupRoutes);
 app.use("/places", placeRoutes);
 app.use("/events", eventRoutes);

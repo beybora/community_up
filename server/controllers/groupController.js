@@ -33,12 +33,15 @@ const getGroupById = async (req, res) => {
 
 const createGroupAndAddToCommunity = async (req, res) => {
   try {
-    const { name, description, communityId } = req.body;
+    const { name, description } = req.body;
+    const communityId = req.params.id;
+    const userId = req.user._id;
 
     const newGroup = await Group.create({
       name,
       description,
       community: communityId,
+      members: [userId],
     });
 
     const updatedCommunity = await Community.findByIdAndUpdate(
@@ -127,7 +130,7 @@ const getGroupsByCommunity = async (req, res) => {
       .populate("members")
       .populate("events")
       .populate("chat");
-  console.log(groupsInCommunity, "groupsInCommunity");
+    console.log(groupsInCommunity, "groupsInCommunity");
     res.status(200).json(groupsInCommunity);
   } catch (error) {
     res.status(500).json({ error: error.message });

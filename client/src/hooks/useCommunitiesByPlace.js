@@ -6,7 +6,7 @@ const useCommunitiesByPlace = () => {
 
   useEffect(() => {
     axios
-      .get("/communitie/place")
+      .get("/community/place")
       .then((response) => {
         setCommunities(response.data);
       })
