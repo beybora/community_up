@@ -7,7 +7,7 @@ const authenticate = require("../middleware/auth");
 router.use(authenticate);
 router.get("/groups", groupController.getAllGroups);
 router.get("/groups/:id", groupController.getGroupById);
-router.post("/groups", groupController.createGroupAndAddToCommunity);
+router.post("/groups/:id", groupController.createGroupAndAddToCommunity);
 router.put("/groups/:id", groupController.updateGroupById);
 router.delete("/groups/:id", groupController.deleteGroupById);
 router.get("/public-groups", groupController.getPublicGroups);
