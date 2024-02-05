@@ -1,7 +1,4 @@
-.App {
-    background: lightblue;
-    padding: 50px;
-}
+
 
 * li {
     list-style: none;
@@ -17,5 +14,5 @@
 }
 
 * ul { 
-    padding: 0px;;
+    padding: 0px;
 }
