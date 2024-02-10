@@ -5,7 +5,7 @@ const authenticate = require("../middleware/auth");
 
 // Define routes
 router.use(authenticate);
-router.get("/messages/:chatId", messageController.allMessages);
-router.post("/messages", messageController.sendMessage);
+router.get("/:id", messageController.allMessages);
+router.post("/send", messageController.sendMessage);
 
 module.exports = router;

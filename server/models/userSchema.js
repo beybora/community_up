@@ -18,10 +18,10 @@ const userSchema = new mongoose.Schema(
 );
 
 //check if email is unique to collection
-userSchema.path("email").validate(async (value) => {
-  const isEmailUnique = await mongoose.models.User.countDocuments({ email: value });
-  return !isEmailUnique
-}, 'email already exists');
+// userSchema.path("email").validate(async (value) => {
+//   const isEmailUnique = await mongoose.models.User.countDocuments({ email: value });
+//   return !isEmailUnique
+// }, 'email already exists');
 
 //safe password encyrptet via bcrypt
 userSchema.pre("save", async function (next) {
