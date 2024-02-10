@@ -13,6 +13,7 @@ router.get("/:id", communityController.getCommunityById);
 router.put("/:id", communityController.updateCommunityById);
 router.delete("/:id", communityController.deleteCommunityById);
 router.post("/join-community/:id", communityController.joinCommunity);
+router.post("/leave-community/:id", communityController.leaveCommunity);
 
 
 module.exports = router;

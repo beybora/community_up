@@ -8,7 +8,10 @@ const chatSchema = new mongoose.Schema(
       required: true,
     },
     description: { type: String },
-    messages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }],
+    latestMessage: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Message",
+    },
   },
   { timestamps: true }
 );
