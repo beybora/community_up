@@ -1,3 +1,8 @@
+import { React, useState, useContext } from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import axios from "../../axiosinstance";
+import { AuthContext } from "../../context/Auth";
 import {
   Modal,
   ModalOverlay,
@@ -13,26 +18,17 @@ import {
   useToast,
   Input,
   Switch,
+  Textarea,
 } from "@chakra-ui/react";
-import { React, useState, useContext } from "react";
-import axios from "../../axiosinstance";
-import { AuthContext } from "../../context/Auth";
 
 const CreateCommunityModal = ({ children }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [newCommunityName, setNewCommunityName] = useState("");
   const [newCommunityDescription, setNewCommunityDescription] = useState("");
   const [newCommunityPrivate, setNewCommunityPrivate] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
-  const {
-    user,
-    selectedChat,
-    setSelectedChat,
-    chats,
-    setChats,
-    selectedCommunity,
-  } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const handleSubmit = () => {
     if (!newCommunityName || !newCommunityDescription) {
@@ -70,36 +66,50 @@ const CreateCommunityModal = ({ children }) => {
       });
   };
 
+  const handleTextEditorChange = (value) => {
+    setNewCommunityDescription(value);
+  };
+
   return (
     <>
       <Button onClick={onOpen}>Create a Community</Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Create Community </ModalHeader>
+        <ModalContent padding="2rem">
+          <ModalHeader padding="0px" mb={5}>
+            Create Community{" "}
+          </ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsam
-            assumenda numquam temporibus vel, quam nobis sint ullam neque
-            nostrum rem.
+          <ModalBody padding="0px" mb={5}>
+            Describe your community's purpose, values, target audience, and
+            unique selling points. Set clear rules for behavior, content, and
+            moderation, including dos and not to dos. Once complete, you'll be
+            ready to launch your community and invite others to join in building
+            a vibrant and inclusive space.
           </ModalBody>
           <FormControl>
             <Input
-              placeholder="Community Name"
+              placeholder="Name your community"
               mb={3}
               onChange={(e) => setNewCommunityName(e.target.value)}
             />
           </FormControl>
 
           <FormControl>
-            <Input
-              placeholder="Community Description"
-              mb={1}
-              onChange={(e) => setNewCommunityDescription(e.target.value)}
+            <ReactQuill
+              style={{
+                resize: "vertical",
+                height: "5rem",
+                marginBottom: "5rem",
+              }}
+              height
+              theme="snow" // specify the theme (snow is a clean theme)
+              value={newCommunityDescription} // bind the content state to the value of the editor
+              onChange={handleTextEditorChange}
             />
           </FormControl>
-          <FormControl display="flex" alignItems="center">
+          <FormControl display="flex" alignItems="center" mb={3}>
             <FormLabel mb="0">Private</FormLabel>
             <Switch
               id="private-switch"
