@@ -1,3 +1,9 @@
+import { React, useState, useContext, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "../../axiosinstance";
+import { AuthContext } from "../../context/Auth";
+import { io } from "socket.io-client";
+const ENDPOINT = import.meta.env.VITE_SERVER_BASE_URL;
 import {
   Modal,
   ModalOverlay,
@@ -12,18 +18,27 @@ import {
   useToast,
   Input,
 } from "@chakra-ui/react";
-import { React, useState, useContext} from "react";
-import axios from "../../axiosinstance";
-import { AuthContext } from "../../context/Auth";
 
 const CreateGroupModal = ({ children }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [newGroupName, setNewGroupName] = useState("");
   const [newGroupDescription, setNewGroupDescription] = useState("");
-  const toast = useToast();
 
-  const { user, selectedChat, setSelectedChat, chats, setChats, selectedCommunity  } =
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
+  const navigate = useNavigate();
+
+  const socket = useRef(null);
+  const { groups, setGroups, selectedCommunity, setFetchGroups } =
     useContext(AuthContext);
+
+  useEffect(() => {
+    if (!selectedCommunity) {
+      navigate("/communities");
+      return;
+    }
+    socket.current = io(ENDPOINT, { transports: ["websocket"] });
+    socket.current.on("groupReceived", newGroupReceived);
+  }, [selectedCommunity]);
 
   const handleSubmit = () => {
     if (!newGroupName || !newGroupDescription) {
@@ -51,11 +66,11 @@ const CreateGroupModal = ({ children }) => {
           isClosable: true,
           position: "top",
         });
-        setChats([response.data, ...chats]);
-        setNewChatAdded((prev) => !prev);
-
+        setGroups([response.data, ...groups]);
+        socket.current.emit("newGroup", response.data);
+        setFetchGroups((prev) => !prev);
         axios
-          .get(`/group/groups-by-community/${selectedCommunity}`)
+          .get(`/group/groups-by-community/${selectedCommunity._id}`)
           .then((response) => {
             onClose();
           })
@@ -78,6 +93,10 @@ const CreateGroupModal = ({ children }) => {
         onClose();
         console.error("Error creating new group", error);
       });
+  };
+
+  const newGroupReceived = () => {
+    setFetchGroups((prev) => !prev);
   };
 
   return (

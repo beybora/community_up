@@ -1,8 +1,15 @@
+
 import { React, useState, useContext } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import axios from "../../axiosinstance";
 import { AuthContext } from "../../context/Auth";
+import { React, useState, useContext, useRef, useEffect } from "react";
+import axios from "../../axiosinstance";
+import { AuthContext } from "../../context/Auth";
+import { io } from "socket.io-client";
+const ENDPOINT = import.meta.env.VITE_SERVER_BASE_URL;
+
 import {
   Modal,
   ModalOverlay,
@@ -25,10 +32,18 @@ const CreateCommunityModal = ({ children }) => {
   const [newCommunityName, setNewCommunityName] = useState("");
   const [newCommunityDescription, setNewCommunityDescription] = useState("");
   const [newCommunityPrivate, setNewCommunityPrivate] = useState(false);
+  
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
-  const { user } = useContext(AuthContext);
+  const { user, setFetchCommunities } = useContext(AuthContext);
+  const socket = useRef(null);
+
+  useEffect(() => {
+    socket.current = io(ENDPOINT, { transports: ["websocket"] });
+    socket.current.on("communityReceived", newCommunityReceived);
+  }),
+    [];
 
   const handleSubmit = () => {
     if (!newCommunityName || !newCommunityDescription) {
@@ -41,15 +56,20 @@ const CreateCommunityModal = ({ children }) => {
       });
       return;
     }
+
+    const community = {
+      name: newCommunityName,
+      description: newCommunityDescription,
+      private: newCommunityPrivate,
+    };
+
     axios
-      .post(`/community/create`, {
-        name: newCommunityName,
-        description: newCommunityDescription,
-        private: newCommunityPrivate,
-      })
+      .post(`/community/create`, community)
       .then((response) => {
         setNewCommunityDescription("");
         setNewCommunityName("");
+        socket.current.emit("newCommunity", response.data);
+        setFetchCommunities((prev) => !prev);
         toast({
           title: "New Community Created!",
           status: "success",
@@ -57,6 +77,7 @@ const CreateCommunityModal = ({ children }) => {
           isClosable: true,
           position: "top",
         });
+        onClose();
       })
       .catch((error) => {
         setNewCommunityDescription("");
@@ -66,8 +87,13 @@ const CreateCommunityModal = ({ children }) => {
       });
   };
 
+
   const handleTextEditorChange = (value) => {
     setNewCommunityDescription(value);
+
+  const newCommunityReceived = (community) => {
+    setFetchCommunities((prev) => !prev);
+
   };
 
   return (
