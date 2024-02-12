@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "../../axiosinstance";
 import { AuthContext } from "../../context/Auth";
 import { io } from "socket.io-client";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 const ENDPOINT = import.meta.env.VITE_SERVER_BASE_URL;
 import {
   Modal,
@@ -19,15 +21,14 @@ import {
   Input,
 } from "@chakra-ui/react";
 
-const CreateGroupModal = ({ children }) => {
+const CreateGroupModal = () => {
   const [newGroupName, setNewGroupName] = useState("");
   const [newGroupDescription, setNewGroupDescription] = useState("");
-
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const navigate = useNavigate();
-
   const socket = useRef(null);
+
   const { groups, setGroups, selectedCommunity, setFetchGroups } =
     useContext(AuthContext);
 
@@ -99,36 +100,46 @@ const CreateGroupModal = ({ children }) => {
     setFetchGroups((prev) => !prev);
   };
 
+  const handleTextEditorChange = (value) => {
+    setNewGroupDescription(value);
+  };
+
   return (
     <>
       <Button onClick={onOpen}>Create a Group</Button>
-
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Create Group </ModalHeader>
+        <ModalContent padding="2rem">
+          <ModalHeader padding="0px" mb={5}>
+            Create Groupe
+          </ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsam
-            assumenda numquam temporibus vel, quam nobis sint ullam neque
-            nostrum rem.
+          <ModalBody padding="0px" mb={5}>
+            Define your group's purpose, values, and target audience. Establish
+            clear guidelines for behavior, content, and moderation. With a solid
+            foundation in place, your group will be poised to attract
+            like-minded individuals and cultivate a vibrant community within the
+            larger community space.
           </ModalBody>
           <FormControl>
             <Input
-              placeholder="Group Name"
+              placeholder="Name your Group"
               mb={3}
               onChange={(e) => setNewGroupName(e.target.value)}
             />
           </FormControl>
-
           <FormControl>
-            <Input
-              placeholder="Group Description"
-              mb={1}
-              onChange={(e) => setNewGroupDescription(e.target.value)}
+            <ReactQuill
+              style={{
+                resize: "vertical",
+                height: "10rem",
+                marginBottom: "5rem",
+              }}
+              theme="snow" // specify the theme (snow is a clean theme)
+              value={newGroupDescription} // bind the content state to the value of the editor
+              onChange={handleTextEditorChange}
             />
           </FormControl>
-
           <ModalFooter>
             <Button colorScheme="red" mr={3} onClick={onClose}>
               Close

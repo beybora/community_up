@@ -1,13 +1,9 @@
-
-import { React, useState, useContext } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import axios from "../../axiosinstance";
-import { AuthContext } from "../../context/Auth";
 import { React, useState, useContext, useRef, useEffect } from "react";
 import axios from "../../axiosinstance";
 import { AuthContext } from "../../context/Auth";
-import { io } from "socket.io-client";
+import io from "socket.io-client";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 const ENDPOINT = import.meta.env.VITE_SERVER_BASE_URL;
 
 import {
@@ -32,11 +28,10 @@ const CreateCommunityModal = ({ children }) => {
   const [newCommunityName, setNewCommunityName] = useState("");
   const [newCommunityDescription, setNewCommunityDescription] = useState("");
   const [newCommunityPrivate, setNewCommunityPrivate] = useState(false);
-  
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
-
   const { user, setFetchCommunities } = useContext(AuthContext);
+
   const socket = useRef(null);
 
   useEffect(() => {
@@ -87,32 +82,31 @@ const CreateCommunityModal = ({ children }) => {
       });
   };
 
-
-  const handleTextEditorChange = (value) => {
-    setNewCommunityDescription(value);
-
   const newCommunityReceived = (community) => {
     setFetchCommunities((prev) => !prev);
+  };
 
+  const handleTextEditorChange = (value) => {
+    console.log(value, "value");
+    setNewCommunityDescription(value);
   };
 
   return (
     <>
       <Button onClick={onOpen}>Create a Community</Button>
-
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent padding="2rem">
           <ModalHeader padding="0px" mb={5}>
-            Create Community{" "}
+            Create a Community{" "}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody padding="0px" mb={5}>
-            Describe your community's purpose, values, target audience, and
-            unique selling points. Set clear rules for behavior, content, and
-            moderation, including dos and not to dos. Once complete, you'll be
-            ready to launch your community and invite others to join in building
-            a vibrant and inclusive space.
+            Define your group's purpose, values, and target audience. Establish
+            clear guidelines for behavior, content, and moderation. With a solid
+            foundation in place, your group will be poised to attract
+            like-minded individuals and cultivate a vibrant community within the
+            larger community space.
           </ModalBody>
           <FormControl>
             <Input
@@ -121,15 +115,13 @@ const CreateCommunityModal = ({ children }) => {
               onChange={(e) => setNewCommunityName(e.target.value)}
             />
           </FormControl>
-
           <FormControl>
             <ReactQuill
               style={{
                 resize: "vertical",
-                height: "5rem",
+                height: "10rem",
                 marginBottom: "5rem",
               }}
-              height
               theme="snow" // specify the theme (snow is a clean theme)
               value={newCommunityDescription} // bind the content state to the value of the editor
               onChange={handleTextEditorChange}
