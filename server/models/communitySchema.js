@@ -7,7 +7,7 @@ const communitySchema = new mongoose.Schema(
     isPrivate: { type: Boolean, default: false },
     location: { type: mongoose.Schema.Types.ObjectId, ref: "Place" },
     members: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    moderators: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    admins: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     groups: [{ type: mongoose.Schema.Types.ObjectId, ref: "Group" }],
     events: [{ type: mongoose.Schema.Types.ObjectId, ref: "Event" }],
   },
