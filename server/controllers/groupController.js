@@ -2,6 +2,7 @@ const Chat = require("../models/chatSchema");
 const Community = require("../models/communitySchema");
 const Group = require("../models/groupSchema");
 const User = require("../models/userSchema");
+const Message = require("../models/messageSchema");
 
 const getAllGroups = async (req, res) => {
   try {
@@ -56,7 +57,6 @@ const createGroupAndAddToCommunity = async (req, res) => {
 
     const newChat = await Chat.create({
       name: `${newGroup.name} Chat`,
-      isGroupChat: true,
       group: newGroup._id,
     });
 
@@ -100,11 +100,32 @@ const deleteGroupById = async (req, res) => {
   try {
     const deletedGroup = await Group.findByIdAndDelete(req.params.id);
     if (!deletedGroup) {
-      return res.status(404).json({ message: "Group not found" });
+      return res.status(404).json({ error: "Group not found" });
     }
+    const chatId = deletedGroup.chat;
+    const communityId = deletedGroup.community;
+
+    console.log("chatId", chatId);
+    console.log("communityId", communityId);
+
+    if (chatId) {
+      // Delete the chat
+      await Chat.findByIdAndDelete(chatId);
+
+      // Delete all messages associated with the chat
+      await Message.deleteMany({ chat: chatId });
+    }
+
+    const updatedCommunity = await Community.findByIdAndUpdate(
+      communityId,
+      { $pull: { groups: req.params.id } },
+      { new: true }
+    );
+
     res.status(200).json({ message: "Group deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Error deleting group:", error.message);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -122,15 +143,13 @@ const getPublicGroups = async (req, res) => {
 };
 
 const getGroupsByCommunity = async (req, res) => {
-  console.log("test");
   try {
     const communityId = req.params.communityId;
-    console.log(communityId, "id");
+
     const groupsInCommunity = await Group.find({ community: communityId })
       .populate("members")
       .populate("events")
       .populate("chat");
-    console.log(groupsInCommunity, "groupsInCommunity");
     res.status(200).json(groupsInCommunity);
   } catch (error) {
     res.status(500).json({ error: error.message });
