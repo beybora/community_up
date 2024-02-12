@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     registrationDate: { type: Date, default: Date.now },
     isAdmin: { type: Boolean, default: false },
+    admin: [{type: mongoose.Schema.Types.ObjectId, ref: "Community"}],
     location: { type: mongoose.Schema.Types.ObjectId, ref: "Place" },
     communities: [{ type: mongoose.Schema.Types.ObjectId, ref: "Community" }],
     groups: [{ type: mongoose.Schema.Types.ObjectId, ref: "Group" }],
@@ -26,7 +27,7 @@ const userSchema = new mongoose.Schema(
 //safe password encyrptet via bcrypt
 userSchema.pre("save", async function (next) {
   try {
-    const hashedPassword = await bcrypt.hash(this.password, 10);
+    const hashedPassword = await bcrypt.hash(this.password, 8);
     this.password = hashedPassword;
     next();
   } catch (error) {
