@@ -1,12 +1,18 @@
 const Message = require("../models/messageSchema");
 const User = require("../models/userSchema");
 const Chat = require("../models/chatSchema");
+const Group = require("../models/groupSchema");
 
 const allMessages = async (req, res) => {
   try {
-    const messages = await Message.find({ chat: req.params.chatId })
-      .populate("user", "name pic email")
+    const messages = await Message.find({ chat: req.params.id })
+      .populate("senderId", "name email")
       .populate("chat");
+
+    if (!messages) {
+      return res.status(404).json({ message: "Messages not found" });
+    }
+
     res.json(messages);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -14,29 +20,42 @@ const allMessages = async (req, res) => {
 };
 
 const sendMessage = async (req, res) => {
-  const { content, chatId } = req.body;
+  const { content, groupId } = req.body;
+  const userId = req.user._id;
 
-  if (!content || !chatId) {
-    return res.sendStatus(400);
+  if (!userId) {
+    return res.status(400).json({ error: "User ID not found" });
   }
 
-  const newMessage = {
-    user: req.user._id,
-    content: content,
-    chat: chatId,
-  };
+  if (!content || !groupId) {
+    return res.sendStatus(400).json({ error: "Content or groupId missing" });
+  }
 
   try {
+    const group = await Group.findById(groupId);
+
+    if (!group) {
+      return res.status(400).json({ error: "Group not found" });
+    }
+
+    const chatId = group.chat;
+
+    const newMessage = {
+      chat: chatId,
+      senderId: userId,
+      content: content,
+    };
+
     let message = await Message.create(newMessage);
 
-    message = await message.populate("user", "name pic").execPopulate();
-    message = await message.populate("chat").execPopulate();
-    message = await User.populate(message, {
-      path: "chat.users",
-      select: "name pic email",
-    });
+    message = await message.populate("senderId", "username  email");
+    message = await message.populate("chat");
 
-    await Chat.findByIdAndUpdate(chatId, { latestMessage: message });
+    const updatedChat = await Chat.findByIdAndUpdate(
+      chatId,
+      { latestMessage: message._id },
+      { new: true }
+    );
 
     res.json(message);
   } catch (error) {
