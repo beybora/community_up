@@ -15,7 +15,7 @@ const getAllChatsOfUser = async (req, res) => {
 
     groupChats = await User.populate(groupChats, {
       path: "latestMessage.sender",
-      select: "name pic email",
+      select: "name email",
     });
 
     res.status(200).json(groupChats);
