@@ -81,7 +81,7 @@ const getUsersInEvent = async (req, res) => {
 //           ],
 //         }
 //       : {};
-    
+
 //     const users = await User.find(keyword).select({ _id: { $ne: req.user._id } })
 //     res.send(users);
 //   } catch (error) {
@@ -92,13 +92,17 @@ const getUsersInEvent = async (req, res) => {
 const register = async (req, res) => {
   try {
     const userDoc = await User.create(req.body);
+
     const userPayload = {
       _id: userDoc._id,
       email: userDoc.email,
       username: userDoc.username,
-      location: userDoc.location
+      location: userDoc.location,
     };
-    const userToken = jwt.sign(userPayload, SECRET);
+
+    const expiresIn = 60 * 60 * 24 * 365;
+    
+    const userToken = jwt.sign(userPayload, SECRET, { expiresIn: expiresIn });
     res
       .status(201)
       .cookie("accessToken", userToken, { httpOnly: true })
@@ -113,29 +117,30 @@ const login = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({ error: "Invalid login attempt" });
+      return res.status(400).json({ error: "Invalid login attempt 1" });
     }
 
     const userDoc = await User.findOne({ email });
 
     if (!userDoc) {
-      return res.status(400).json({ error: "Invalid login attempt" });
+      return res.status(400).json({ error: "Invalid login attempt 2 " });
     }
 
     const isPasswordValid = await bcrypt.compare(password, userDoc.password);
 
     if (!isPasswordValid) {
-      return res.status(400).json({ error: "Invalid login attempt" });
+      return res.status(400).json({ error: "Invalid login attempt 3" });
     }
 
     const userPayload = {
       _id: userDoc._id,
       email: userDoc.email,
       username: userDoc.username,
-      location: userDoc.location
+      location: userDoc.location,
     };
+    const expiresIn = 60 * 60 * 24 * 365;
 
-    const userToken = jwt.sign(userPayload, SECRET, { expiresIn: "1h" });
+    const userToken = jwt.sign(userPayload, SECRET, { expiresIn: expiresIn });
 
     res
       .status(200)
@@ -161,14 +166,12 @@ const getLoggedUser = async (req, res) => {
 };
 
 const getJoinedCommunities = async (req, res) => {
-
-  console.log(req.user);
   try {
-    const userId = req.user._id; 
-    const user = await User.findById(userId).populate('communities');
-    
+    const userId = req.user._id;
+    const user = await User.findById(userId).populate("communities");
+
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     res.status(200).json(user.communities);
@@ -180,11 +183,11 @@ const getJoinedCommunities = async (req, res) => {
 const getJoinedGroups = async (req, res) => {
   try {
     const userId = req.user._id;
-    const communityId = req.params.communityId; 
+    const communityId = req.params.communityId;
 
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const groups = await Group.find({
@@ -201,10 +204,10 @@ const getJoinedGroups = async (req, res) => {
 const getAllUserGroups = async (req, res) => {
   try {
     const userId = req.user._id;
-    
+
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     // Fetch all groups where the user is a member
@@ -217,7 +220,6 @@ const getAllUserGroups = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 
 module.exports = {
   getAllUsers,
