@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
 import { Box } from "@chakra-ui/react";
 import ChatBox from "../../components/ChatBox/ChatBox";
-import MyChats from "../../components/MyChats/MyChats";
+import MyGroups from "../../components/MyGroups/MyGroups";
 import NavBar from "../../components/NavBar/NavBar";
 import { AuthContext } from "../../context/Auth";
 import Communities from "../../components/Communities";
-import DescriptionBox from "../../components/DescriptionBox";
+import CommunityDescriptionBox from "../../components/CommunityDescriptionBox";
 
-const CommunitesPage = () => {
+const CommunitiesPage = () => {
   const context = useContext(AuthContext);
 
   return (
@@ -22,10 +22,10 @@ const CommunitesPage = () => {
       >
         {context.user && <Communities />}
 
-        {context.user && <DescriptionBox />}
+        {context.user && <CommunityDescriptionBox />}
       </Box>
     </div>
   );
 };
 
-export default CommunitesPage;
+export default CommunitiesPage;

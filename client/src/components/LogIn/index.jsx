@@ -51,7 +51,7 @@ const Login = () => {
           isClosable: true,
           position: "bottom",
         });
-        navigate("/");
+        navigate("/communities");
       })
       .catch((err) => {
         toast({
@@ -109,6 +109,7 @@ const Login = () => {
         style={{ marginTop: 15 }}
         onClick={submitHandler}
         isLoading={loading}
+        type="submit"
       >
         Login
       </Button>

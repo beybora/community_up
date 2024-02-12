@@ -13,15 +13,19 @@ import {
 } from "@chakra-ui/react";
 import { ChevronDownIcon, BellIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { AuthContext } from "../../context/Auth";
-import axios from "../../axiosinstance"; 
-
+import axios from "../../axiosinstance";
 
 function NavBar() {
-  const { user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const logoutHandler = async () => {
-    axios 
+    try {
+      await axios.post("/users/logout");
+      navigate("/");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
   };
 
   return (
@@ -37,12 +41,11 @@ function NavBar() {
       <Text fontSize="2xl">Community Up</Text>
       <Box display="flex" gap="10px">
         <Menu>
-          <MenuButton as={Button} bg="white" p={1}>
+          <MenuButton>
             <BellIcon fontSize="2xl" m={1} />
           </MenuButton>
-          <MenuButton as={Button} bg="white" p={1}>
-            <HamburgerIcon fontSize="2xl" m={1} />
-          </MenuButton>
+        </Menu>
+        <Menu>
           <MenuButton as={Button} bg="white" rightIcon={<ChevronDownIcon />}>
             <Avatar
               size="sm"

@@ -57,6 +57,11 @@ connectDB()
       socket.on("newGroupUpdate", (newGroupUpdateReceived) => {
         socket.broadcast.emit("groupUpdated", newGroupUpdateReceived);
       });
+
+      socket.on("newCommunityUpdate", (newGroupUpdateReceived) => {
+        socket.broadcast.emit("communityUpdated", newGroupUpdateReceived);
+      });
+      
     });
   })
   .catch((error) => {

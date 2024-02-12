@@ -10,20 +10,23 @@ function AuthProvider({ children }) {
   const [user, setUser] = useState({});
   const [notification, setNotification] = useState([]);
   const [chats, setChats] = useState([]);
+  const [groups, setGroups] = useState([]);
+  const [selectedGroup, setSelectedGroup] = useState();
   const [communities, setCommunities] = useState([]);
-  const [fetch, setFetch] = useState(false);
+  const [fetchCommunities, setFetchCommunities] = useState(false);
+  const [fetchGroups, setFetchGroups] = useState(false);
   const [selectedCommunity, setSelectedCommunity] = useState();
   const [joinedCommunities, setJoinedCommunities] = useState([]);
+  const [joinGroupChat, setJoinGroupChat] = useState(false);
 
   useEffect(() => {
     axios
       .get("/users/currentUser")
       .then((res) => {
-        setUser(res.data.user);
+        setUser(res.data.user); 
       })
       .catch((error) => {
-        navigate("/login");
-        setState(null);
+        navigate("/");
       });
   }, []);
 
@@ -38,14 +41,22 @@ function AuthProvider({ children }) {
         setNotification,
         chats,
         setChats,
-        fetch,
-        setFetch,
-        selectedCommunity,
-        setSelectedCommunity,
         communities,
         setCommunities,
+        selectedCommunity,
+        setSelectedCommunity,
+        fetchCommunities,
+        setFetchCommunities,
         joinedCommunities,
         setJoinedCommunities,
+        joinGroupChat,
+        setJoinGroupChat,
+        groups,
+        setGroups,
+        selectedGroup,
+        setSelectedGroup,
+        fetchGroups,
+        setFetchGroups,
       }}
     >
       {children}

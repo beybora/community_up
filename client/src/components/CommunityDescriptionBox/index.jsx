@@ -9,15 +9,20 @@ import { Icon } from "@chakra-ui/react";
 import EditCommunityModal from "../EditCommunityModal";
 
 const CommunityDescriptionBox = () => {
-  const { user, selectedCommunity } = useContext(AuthContext);
+  const { user, selectedCommunity, fetchCommunities } = useContext(AuthContext);
   const [isAdmin, setIsAdmin] = useState(false);
   console.log("selectedCommunity", selectedCommunity);
 
   useEffect(() => {
+    console.log("selectedCommunity", selectedCommunity);
+    console.log("user", user._id);
+    console.log("isAdmin", isAdmin);
     if (selectedCommunity && user) {
       setIsAdmin(user.admin.includes(selectedCommunity._id));
+      console.log("isAdmin", isAdmin);
     }
-  }, [selectedCommunity, user]);
+
+  }, [selectedCommunity, user, fetchCommunities]);
 
   return (
     <Box
@@ -32,7 +37,11 @@ const CommunityDescriptionBox = () => {
     >
       {selectedCommunity ? (
         <Box display="flex" justifyContent="space-between" width="100%">
-          {isAdmin && <EditCommunityModal community={selectedCommunity} />}
+          {isAdmin ? (
+            <EditCommunityModal community={selectedCommunity} />
+          ) : (
+            <div> </div>
+          )}
           <Heading size="lg"> {selectedCommunity.name}</Heading>{" "}
         </Box>
       ) : (

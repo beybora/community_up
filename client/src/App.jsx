@@ -1,11 +1,8 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import Login from "./components/LogIn";
 import ChatPage from "./pages/ChatPage";
 import Authentication from "./pages/Authentication";
-import Communities from "./components/Communities";
-import CommunitesPage from "./pages/CommunitiesPage";
+import CommunitiesPage from "./pages/CommunitiesPage";
 
 
 function App() {
@@ -15,8 +12,8 @@ function App() {
       <main>
         <Routes>
           <Route path="/community/:id" element={<ChatPage />} />
-          <Route path="/login" element={<Authentication />} />
-          <Route path="/communities" element={<CommunitesPage />} />
+          <Route path="/" element={<Authentication />} />
+          <Route path="/communities" element={<CommunitiesPage />} />
         </Routes>
       </main>
       <footer></footer>

@@ -1,8 +1,9 @@
 import "./index.css";
-import axios from "../../axiosinstance";
-import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState, useContext } from "react";
 import Login from "../../components/LogIn";
 import Register from "../../components/Register";
+import { AuthContext } from "../../context/Auth";
 import {
   Box,
   Container,
@@ -13,8 +14,12 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
+
 const Authentication = () => {
+  const { user } = useContext(AuthContext);
   const [isLoginTab, setLoginTab] = useState(true);
+  const navigate = useNavigate();
+
 
   const handleTabChange = () => {
     setLoginTab(!isLoginTab);
@@ -32,7 +37,12 @@ const Authentication = () => {
         borderRadius="lg"
         borderWidth="1px"
       >
-        <Text fontSize="4xl" justifyContent="center" display="flex" fontFamily="fantasy">
+        <Text
+          fontSize="4xl"
+          justifyContent="center"
+          display="flex"
+          fontFamily="fantasy"
+        >
           COMMUNITY UP
         </Text>
       </Box>
