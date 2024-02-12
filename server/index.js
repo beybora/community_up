@@ -53,6 +53,10 @@ connectDB()
       socket.on("newGroup", (newGroupReceived) => {
         socket.broadcast.emit("groupReceived", newGroupReceived);
       });
+
+      socket.on("newGroupUpdate", (newGroupUpdateReceived) => {
+        socket.broadcast.emit("groupUpdated", newGroupUpdateReceived);
+      });
     });
   })
   .catch((error) => {
