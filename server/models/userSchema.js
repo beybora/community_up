@@ -27,6 +27,7 @@ const userSchema = new mongoose.Schema(
 //safe password encyrptet via bcrypt
 userSchema.pre("save", async function (next) {
   try {
+    console.log("WHAT IS THE DATABASE SAVE PASSWORD",this.password)
     const hashedPassword = await bcrypt.hash(this.password, 8);
     this.password = hashedPassword;
     next();
