@@ -51,7 +51,7 @@ const Login = () => {
           isClosable: true,
           position: "bottom",
         });
-        navigate("/communities");
+        navigate("/");
       })
       .catch((err) => {
         toast({

@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import ChatPage from "./pages/ChatPage";
 import Authentication from "./pages/Authentication";
 import CommunitiesPage from "./pages/CommunitiesPage";
-
+import Protected from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -11,9 +11,12 @@ function App() {
       <header></header>
       <main>
         <Routes>
-          <Route path="/community/:id" element={<ChatPage />} />
-          <Route path="/" element={<Authentication />} />
-          <Route path="/communities" element={<CommunitiesPage />} />
+          <Route path="/" element={<Protected />}>
+            <Route path="community/:id" element={<ChatPage />} />
+            <Route path="" element={<CommunitiesPage />} />
+            <Route path="*" element={<CommunitiesPage/>} />
+          </Route>
+          <Route path="/login" element={<Authentication />} />
         </Routes>
       </main>
       <footer></footer>
