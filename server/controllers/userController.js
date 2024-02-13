@@ -15,15 +15,33 @@ const getAllUsers = async (req, res) => {
 
 const getUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const userId = req.params.id;
+    
+    const user = await User.findById(userId)
+      .populate("location") // Assuming "location" is a reference to another collection
+      .populate("communities"); // Assuming "communities" is a reference to another collection
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.status(200).json(user);
+    
+    const userData = {
+      _id: user._id,
+      username: user.username,
+      location: user.location ? user.location : null, 
+      registrationDate: user.registrationDate,
+      communities: user.communities.map(community => ({
+        _id: community._id,
+        name: community.name,
+      })),
+    };
+
+    res.status(200).json(userData);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 const updateUserById = async (req, res) => {
   try {
@@ -101,7 +119,7 @@ const register = async (req, res) => {
     };
 
     const expiresIn = 60 * 60 * 24 * 365;
-    
+
     const userToken = jwt.sign(userPayload, SECRET, { expiresIn: expiresIn });
     res
       .status(201)
