@@ -11,18 +11,28 @@ import {
   MenuItem,
   MenuDivider,
 } from "@chakra-ui/react";
-import { ChevronDownIcon, BellIcon, HamburgerIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, BellIcon } from "@chakra-ui/icons";
 import { AuthContext } from "../../context/Auth";
 import axios from "../../axiosinstance";
+import ProfileModal from "../ProfileModal";
 
 function NavBar() {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  const [isProfileModalOpen, setIsProfileModalOpen] = React.useState(false);
+
+  const openProfileModal = () => {
+    setIsProfileModalOpen(true);
+  };
+
+  const closeProfileModal = () => {
+    setIsProfileModalOpen(false);
+  };
+
   const logoutHandler = async () => {
     try {
-      await axios.post("/users/logout");
-      navigate("/");
+      await logout(); // Using the logout function from AuthContext
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -55,18 +65,15 @@ function NavBar() {
             />
           </MenuButton>
           <MenuList>
-            <MenuItem
-              onClick={() => {
-                /* Handle profile click */
-              }}
-            >
-              My Profile
-            </MenuItem>
+            <MenuItem onClick={openProfileModal}>My Profile</MenuItem>
             <MenuDivider />
             <MenuItem onClick={logoutHandler}>Logout</MenuItem>
           </MenuList>
         </Menu>
       </Box>
+      {user && (
+        <ProfileModal isOpen={isProfileModalOpen} onClose={closeProfileModal} />
+      )}
     </Box>
   );
 }
