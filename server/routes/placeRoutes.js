@@ -4,8 +4,9 @@ const placeController = require("../controllers/placeController");
 const authenticate = require("../middleware/auth");
 
 // Define routes
-router.use(authenticate);
+
 router.get("/places", placeController.getAllPlaces);
+router.use(authenticate);
 router.get("/places/:id", placeController.getPlaceById);
 router.post("/places", placeController.createPlace);
 router.put("/places/:id", placeController.updatePlaceById);
