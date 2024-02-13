@@ -1,17 +1,10 @@
-import {
-  FormControl,
-  FormLabel,
-  VStack,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Button,
-} from "@chakra-ui/react";
+import { useState, useContext } from "react";
+import { Button } from "@chakra-ui/react";
+import { FormControl, FormLabel } from "@chakra-ui/react";
+import { Input, InputGroup, InputRightElement } from "@chakra-ui/react";
+import { VStack } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
-import axios from "../../axiosinstance";
-import "./index.css";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/Auth";
 
 const Login = () => {
   const [password, setPassword] = useState("");
@@ -19,10 +12,11 @@ const Login = () => {
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const toast = useToast();
-  const navigate = useNavigate();
+
+  const { login } = useContext(AuthContext);
 
   const submitHandler = (e) => {
-    setLoading(true);
+    // setLoading(true);
     if (!email || !password) {
       toast({
         title: "Fill out both fields",
@@ -31,7 +25,7 @@ const Login = () => {
         isClosable: true,
         position: "bottom",
       });
-      setLoading(false);
+      // setLoading(false);
       return;
     }
     const credentials = {
@@ -40,36 +34,7 @@ const Login = () => {
     };
 
     e.preventDefault();
-    axios
-      .post("users/login", credentials)
-      .then((response) => {
-        setLoading(false);
-        toast({
-          title: "Login Successful",
-          status: "success",
-          duration: 2500,
-          isClosable: true,
-          position: "bottom",
-        });
-        navigate("/");
-      })
-      .catch((err) => {
-        toast({
-          title: "Check your credentials",
-          status: "warning",
-          duration: 2500,
-          isClosable: true,
-          position: "bottom",
-        });
-        setLoading(false);
-        console.log(err);
-      });
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    setUser({ ...user, [name]: value });
+    console.log(login(credentials));
   };
 
   return (
