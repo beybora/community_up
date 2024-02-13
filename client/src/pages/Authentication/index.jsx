@@ -1,9 +1,10 @@
-import "./index.css";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState, useContext } from "react";
 import Login from "../../components/LogIn";
 import Register from "../../components/Register";
 import { AuthContext } from "../../context/Auth";
+import Logo from "../../assets/logo.png";
+
 import {
   Box,
   Container,
@@ -19,7 +20,6 @@ const Authentication = () => {
   const { user } = useContext(AuthContext);
   const [isLoginTab, setLoginTab] = useState(true);
   const navigate = useNavigate();
-
 
   const handleTabChange = () => {
     setLoginTab(!isLoginTab);
@@ -37,14 +37,13 @@ const Authentication = () => {
         borderRadius="lg"
         borderWidth="1px"
       >
-        <Text
-          fontSize="4xl"
-          justifyContent="center"
-          display="flex"
-          fontFamily="fantasy"
-        >
-          COMMUNITY UP
-        </Text>
+        <Box display="flex" justifyContent="center">
+          <img
+            src={Logo}
+            alt="Logo"
+            style={{ height: "100px", width: "auto" }}
+          />
+        </Box>
       </Box>
       <Box bg="white" w="100%" p={4} borderRadius="lg" borderWidth="1px">
         <Tabs isFitted variant="soft-rounded">

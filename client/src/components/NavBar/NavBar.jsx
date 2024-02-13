@@ -15,6 +15,8 @@ import { ChevronDownIcon, BellIcon } from "@chakra-ui/icons";
 import { AuthContext } from "../../context/Auth";
 import axios from "../../axiosinstance";
 import ProfileModal from "../ProfileModal";
+import Logo from "../../assets/logo.png";
+
 
 function NavBar() {
   const { user, logout } = useContext(AuthContext);
@@ -48,7 +50,9 @@ function NavBar() {
       padding="5px 10px 5px 10px"
       borderColor={"darkgreen"}
     >
-      <Text fontSize="2xl">Community Up</Text>
+       <Box>
+        <img src={Logo} alt="Logo" style={{ height: "50px", width: "auto" }} />
+      </Box>
       <Box display="flex" gap="10px">
         <Menu>
           <MenuButton>
