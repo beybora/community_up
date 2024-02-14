@@ -5,19 +5,19 @@ import { Input, InputGroup, InputRightElement } from "@chakra-ui/input";
 import { VStack } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
 import { Select } from "@chakra-ui/react";
-import { Navigate } from 'react-router-dom';
+import { Navigate } from "react-router-dom";
 import { AppDataContext } from "../../context/AppDataContext";
 import { AuthContext } from "../../context/Auth";
 
 const Register = () => {
   const [show, setShow] = useState(false);
+  const toast = useToast();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
     confirmPassword: "",
     selectedPlace: "",
   });
-  const toast = useToast();
 
   const { places } = useContext(AppDataContext);
   const { register, loading, user } = useContext(AuthContext);
@@ -26,7 +26,6 @@ const Register = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
     setFormData({ ...formData, [name]: value });
   };
 
@@ -49,13 +48,13 @@ const Register = () => {
       isClosable: true,
       position: "bottom",
     });
-    console.log("formData", formData);
     register(formData);
   };
 
   if (!loading && user) {
     return <Navigate to="/" />;
   }
+
   if (!loading && !user) {
     return (
       <VStack spacing="5px">

@@ -1,14 +1,15 @@
-import { React, useState, useContext } from "react";
+import { React, useContext } from "react";
 import { Box, Text } from "@chakra-ui/layout";
-import { Button, Heading, IconButton } from "@chakra-ui/react";
-import { AuthContext } from "../../context/Auth";
-import { ChatIcon, EditIcon } from "@chakra-ui/icons";
+import { Heading, IconButton } from "@chakra-ui/react";
+import { ChatIcon } from "@chakra-ui/icons";
 
 import ReactHtmlParser from "react-html-parser";
 import ScrollableFeed from "react-scrollable-feed";
+import { AppDataContext } from "../../context/AppDataContext";
 
 const GroupDescriptionBox = () => {
-  const { selectedGroup, setJoinGroupChat } = useContext(AuthContext);
+  const { selectedGroup, setJoinGroupChat } = useContext(AppDataContext);
+
   return (
     <Box
       display={{ base: selectedGroup ? "flex" : "none", md: "flex" }}
@@ -31,7 +32,6 @@ const GroupDescriptionBox = () => {
                 setJoinGroupChat(true);
               }}
             />
-        
           </Box>
           <Heading size="lg"> {selectedGroup.name}</Heading>
         </Box>

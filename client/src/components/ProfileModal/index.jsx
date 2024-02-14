@@ -2,7 +2,6 @@
 
 import { React, useContext } from "react";
 import { AuthContext } from "../../context/Auth";
-import { CheckCircleIcon } from "@chakra-ui/icons";
 import {
   Text,
   Box,
@@ -13,15 +12,10 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  useDisclosure,
-  UnorderedList,
-  ListItem,
-  ListIcon,
 } from "@chakra-ui/react";
 
 const ProfileModal = ({ isOpen, onClose }) => {
   const { user } = useContext(AuthContext);
-  console.log("user", user);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>

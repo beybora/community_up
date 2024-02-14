@@ -6,6 +6,17 @@ export const AppDataContext = createContext();
 function AppDataProvider({ children }) {
   const [places, setPlaces] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedChat, setSelectedChat] = useState();
+  const [notification, setNotification] = useState([]);
+  const [chats, setChats] = useState([]);
+  const [groups, setGroups] = useState([]);
+  const [selectedGroup, setSelectedGroup] = useState();
+  const [communities, setCommunities] = useState([]);
+  const [fetchCommunities, setFetchCommunities] = useState(false);
+  const [fetchGroups, setFetchGroups] = useState(false);
+  const [selectedCommunity, setSelectedCommunity] = useState();
+  const [joinedCommunities, setJoinedCommunities] = useState([]);
+  const [joinGroupChat, setJoinGroupChat] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,7 +34,35 @@ function AppDataProvider({ children }) {
   }, []);
 
   return (
-    <AppDataContext.Provider value={{ places, loading }}>
+    <AppDataContext.Provider
+      value={{
+        places,
+        loading,
+        selectedChat,
+        setSelectedChat,
+        notification,
+        setNotification,
+        chats,
+        setChats,
+        communities,
+        setCommunities,
+        selectedCommunity,
+        setSelectedCommunity,
+        fetchCommunities,
+        setFetchCommunities,
+        joinedCommunities,
+        setJoinedCommunities,
+        joinGroupChat,
+        setJoinGroupChat,
+        groups,
+        setGroups,
+        selectedGroup,
+        setSelectedGroup,
+        fetchGroups,
+        setFetchGroups,
+       
+      }}
+    >
       {children}
     </AppDataContext.Provider>
   );

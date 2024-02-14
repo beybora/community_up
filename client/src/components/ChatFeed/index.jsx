@@ -1,11 +1,11 @@
 import { React, useContext } from "react";
 import ScrollableFeed from "react-scrollable-feed";
 import { AuthContext } from "../../context/Auth";
-
 import { Avatar, Flex, Tooltip } from "@chakra-ui/react";
 
 const ChatFeed = ({ messages }) => {
-  const { user, selectedGroup } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
+
   return (
     <ScrollableFeed>
       {messages &&

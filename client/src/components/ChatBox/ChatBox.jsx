@@ -2,12 +2,13 @@ import { React, useState, useContext } from "react";
 import { Box } from "@chakra-ui/layout";
 import { IconButton } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
-import { AuthContext } from "../../context/Auth";
 import SingleChat from "../SingleChat";
+import { AppDataContext } from "../../context/AppDataContext";
 
 const ChatBox = () => {
   const { joinGroupChat, setJoinGroupChat, selectedGroup } =
-    useContext(AuthContext);
+    useContext(AppDataContext);
+
   return (
     <Box
       display={{ base: selectedGroup ? "flex" : "none", md: "flex" }}

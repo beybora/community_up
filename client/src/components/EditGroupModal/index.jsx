@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import axios from "../../axiosinstance";
 import { io } from "socket.io-client";
-import { AuthContext } from "../../context/Auth";
 import ReactQuill from "react-quill";
 import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import "react-quill/dist/quill.snow.css";
@@ -21,6 +20,7 @@ import {
   useDisclosure,
   Input,
 } from "@chakra-ui/react";
+import { AppDataContext } from "../../context/AppDataContext";
 
 const EditGroupModal = ({ group }) => {
   const [groupName, setGroupName] = useState(group.name);
@@ -29,7 +29,7 @@ const EditGroupModal = ({ group }) => {
   const toast = useToast();
   const socket = useRef(null);
 
-  const { setFetchGroups } = useContext(AuthContext);
+  const { setFetchGroups } = useContext(AppDataContext);
 
   useEffect(() => {
     socket.current = io(ENDPOINT, { transports: ["websocket"] });
@@ -46,7 +46,7 @@ const EditGroupModal = ({ group }) => {
         status: "warning",
         duration: 1000,
         isClosable: true,
-        position: "top",
+        position: "bottom",
       });
       return;
     }
@@ -61,7 +61,7 @@ const EditGroupModal = ({ group }) => {
           status: "success",
           duration: 2000,
           isClosable: true,
-          position: "top",
+          position: "bottom",
         });
         onClose();
         handleGroupUpdated();
@@ -89,7 +89,7 @@ const EditGroupModal = ({ group }) => {
           status: "success",
           duration: 2000,
           isClosable: true,
-          position: "top",
+          position: "bottom",
         });
         onClose();
         handleGroupUpdated();
@@ -114,8 +114,6 @@ const EditGroupModal = ({ group }) => {
   const handleGroupUpdated = () => {
     setFetchGroups((prev) => !prev);
   };
-
- 
 
   return (
     <>

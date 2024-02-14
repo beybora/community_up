@@ -4,17 +4,14 @@ import { Box, Text } from "@chakra-ui/layout";
 import ChatFeed from "../ChatFeed";
 import axios from "../../axiosinstance";
 import { io } from "socket.io-client";
-import { ArrowBackIcon } from "@chakra-ui/icons"; 
+const ENDPOINT = import.meta.env.VITE_SERVER_BASE_URL;
 import {
   FormControl,
-  IconButton,
   Input,
   Spinner,
   useToast,
 } from "@chakra-ui/react";
-
-
-const ENDPOINT = import.meta.env.VITE_SERVER_BASE_URL;
+import { AppDataContext } from "../../context/AppDataContext";
 
 const SingleChat = () => {
   const [messages, setMessages] = useState([]);
@@ -23,8 +20,9 @@ const SingleChat = () => {
   const toast = useToast();
   const socket = useRef(null);
 
-  const { user, selectedGroup } = useContext(AuthContext);
-  
+  const { user } = useContext(AuthContext);
+  const { selectedGroup } = useContext(AppDataContext);
+
   useEffect(() => {
     socket.current = io(ENDPOINT, { transports: ["websocket"] });
 

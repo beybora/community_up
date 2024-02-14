@@ -1,5 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ChevronDownIcon, BellIcon } from "@chakra-ui/icons";
+import ProfileModal from "../ProfileModal";
+import Logo from "../../assets/logo.png";
+import { AuthContext } from "../../context/Auth";
+
 import {
   Text,
   Box,
@@ -11,18 +16,11 @@ import {
   MenuItem,
   MenuDivider,
 } from "@chakra-ui/react";
-import { ChevronDownIcon, BellIcon } from "@chakra-ui/icons";
-import { AuthContext } from "../../context/Auth";
-import axios from "../../axiosinstance";
-import ProfileModal from "../ProfileModal";
-import Logo from "../../assets/logo.png";
-
 
 function NavBar() {
   const { user, logout } = useContext(AuthContext);
-  const navigate = useNavigate();
 
-  const [isProfileModalOpen, setIsProfileModalOpen] = React.useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   const openProfileModal = () => {
     setIsProfileModalOpen(true);
@@ -32,12 +30,8 @@ function NavBar() {
     setIsProfileModalOpen(false);
   };
 
-  const logoutHandler = async () => {
-    try {
-      await logout(); // Using the logout function from AuthContext
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
+  const logoutHandler = () => {
+    logout();
   };
 
   return (
@@ -50,7 +44,7 @@ function NavBar() {
       padding="5px 10px 5px 10px"
       borderColor={"darkgreen"}
     >
-       <Box>
+      <Box>
         <img src={Logo} alt="Logo" style={{ height: "50px", width: "auto" }} />
       </Box>
       <Box display="flex" gap="10px">

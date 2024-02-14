@@ -1,15 +1,17 @@
-import React, { useState, useContext, useEffect } from "react";
-import { AuthContext } from "../../context/Auth";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../../axiosinstance";
-import { AddIcon, ViewIcon } from "@chakra-ui/icons";
-import { Box, Stack, Text } from "@chakra-ui/layout";
+import { AddIcon } from "@chakra-ui/icons";
+import { Box, Stack } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
 import { Button, Spinner } from "@chakra-ui/react";
 import CreateCommunityModal from "../CreateCrommunityModal";
-import EditCommunityModal from "../EditCommunityModal";
+import { AppDataContext } from "../../context/AppDataContext";
 
 const Communities = () => {
+  const toast = useToast();
+  const navigate = useNavigate();
+
   const {
     fetchCommunities,
     setFetchCommunities,
@@ -20,11 +22,7 @@ const Communities = () => {
     joinedCommunities,
     setJoinedCommunities,
     setGroups,
-    user,
-  } = useContext(AuthContext);
-  const toast = useToast();
-  const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState({});
+  } = useContext(AppDataContext);
 
   useEffect(() => {
     fetchAllCommunitiesByPlace();
