@@ -2,12 +2,11 @@ import { React, useContext, useEffect } from "react";
 import { Box } from "@chakra-ui/react";
 import GroupDescriptionBox from "../../components/GroupDescriptionBox";
 import Groups from "../../components/Groups/Groups";
-import NavBar from "../../components/NavBar/NavBar";
 import { AuthContext } from "../../context/Auth";
 import ChatBox from "../../components/ChatBox/ChatBox";
 import { AppDataContext } from "../../context/AppDataContext";
 
-const ChatPage = () => {
+const GroupsPage = () => {
   const { joinGroupChat, setJoinGroupChat } = useContext(AppDataContext);
   const { user } = useContext(AuthContext);
 
@@ -34,4 +33,4 @@ const ChatPage = () => {
   );
 };
 
-export default ChatPage;
+export default GroupsPage;
