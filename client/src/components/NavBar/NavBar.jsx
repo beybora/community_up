@@ -48,11 +48,11 @@ function NavBar() {
         <img src={Logo} alt="Logo" style={{ height: "50px", width: "auto" }} />
       </Box>
       <Box display="flex" gap="10px">
-        <Menu>
+        {/* <Menu>
           <MenuButton>
             <BellIcon fontSize="2xl" m={1} />
           </MenuButton>
-        </Menu>
+        </Menu> */}
         <Menu>
           <MenuButton as={Button} bg="white" rightIcon={<ChevronDownIcon />}>
             <Avatar
