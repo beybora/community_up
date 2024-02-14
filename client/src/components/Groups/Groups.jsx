@@ -17,7 +17,7 @@ const Groups = () => {
     setGroups,
     selectedGroup,
   } = useContext(AppDataContext);
-  
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,6 +42,7 @@ const Groups = () => {
       flexDir="column"
       alignItems="center"
       padding={3}
+      borderRadius="lg"
       bg="white"
       width={{ base: "100%", md: "31%" }}
       borderWidth="1px"
@@ -90,10 +91,7 @@ const Groups = () => {
               >
                 <Box display="flex" justifyContent="space-between">
                   {group.name}
-                  <EditGroupModal
-                    group={group}
-                  >
-                  </EditGroupModal>
+                  <EditGroupModal group={group}></EditGroupModal>
                 </Box>
               </Box>
             ))}

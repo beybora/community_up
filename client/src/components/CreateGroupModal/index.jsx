@@ -106,12 +106,12 @@ const CreateGroupModal = () => {
 
   return (
     <>
-      <Button onClick={onOpen}>Create a Group</Button>
+      <Button bg="#E8E8E8" onClick={onOpen}>Create a Group</Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent padding="2rem">
           <ModalHeader padding="0px" mb={5}>
-            Create Groupe
+            Create Group
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody padding="0px" mb={5}>

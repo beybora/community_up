@@ -123,6 +123,7 @@ const Communities = () => {
       flexDir="column"
       alignItems="center"
       padding={3}
+      borderRadius="lg"
       bg="white"
       width={{ base: "100%", md: "31%" }}
       borderWidth="1px"

@@ -23,12 +23,12 @@ const ProfileModal = ({ isOpen, onClose }) => {
       <ModalContent padding="2rem">
         <ModalHeader>User Profile</ModalHeader>
         <ModalBody>
-          <Text mb=".5rem">Username: {user.username}</Text>
+          <Text  mb=".5rem">Username: {user.username}</Text>
           <Text mb=".5rem">Location: {user.location}</Text>
           <Text mb=".5rem">Registration Date: {user.registrationDate}</Text>
         </ModalBody>
         <ModalFooter>
-          <Button onClick={onClose}>Close</Button>
+          <Button colorScheme="red" onClick={onClose}>Close</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>

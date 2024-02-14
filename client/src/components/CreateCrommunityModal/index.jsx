@@ -95,7 +95,7 @@ const CreateCommunityModal = ({ children }) => {
 
   return (
     <>
-      <Button onClick={onOpen}>Create a Community</Button>
+      <Button bg="#E8E8E8" onClick={onOpen}>Create a Community</Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent padding="2rem">

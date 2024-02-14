@@ -27,6 +27,7 @@ const ChatBox = () => {
             mb=".5rem"
             icon={<ArrowBackIcon />}
             aria-label="Leave the Groupchat"
+            bg="#E8E8E8"
             size="md"
             onClick={() => setJoinGroupChat(false)}
           />
