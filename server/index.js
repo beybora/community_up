@@ -4,13 +4,6 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 const cookieParser = require("cookie-parser");
 const path = require("path");
-const io = require("socket.io")(server, {
-  pingTimeout: 60000,
-  cors: {
-    cors: true,
-    origin: process.env.FRONTEND_URL,
-  },
-});
 const userRouter = require("./routes/userRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const communtieRoutes = require("./routes/communtieRoutes");
@@ -24,6 +17,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
+
 app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
 
 app.use("/users", userRouter);
@@ -34,17 +28,25 @@ app.use("/places", placeRoutes);
 app.use("/events", eventRoutes);
 app.use("/messages", messageRoutes);
 
-if (process.env.NODE_ENV === "production") {
-  const buildPath = path.join(__dirname, "../client/dist");
-  app.use(express.static(buildPath));
+// if (process.env.NODE_ENV === "production") {
+//   const buildPath = path.join(__dirname, "../client/dist");
+//   app.use(express.static(buildPath));
 
-  app.get("*", (req, res) => res.sendFile(path.join(buildPath, "index.html")));
-}
+//   app.get("*", (req, res) => res.sendFile(path.join(buildPath, "index.html")));
+// }
 
 connectDB()
   .then(() => {
     const server = app.listen(PORT, () => {
       console.log(`Server is up on port ${PORT}`);
+    });
+
+    const io = require("socket.io")(server, {
+      pingTimeout: 60000,
+      cors: {
+        cors: true,
+        origin: process.env.FRONTEND_URL,
+      },
     });
 
     //create basic socket connection
