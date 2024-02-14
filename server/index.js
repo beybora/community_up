@@ -3,10 +3,12 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
 const cookieParser = require("cookie-parser");
-const { createServer } = require("http");
-const { Server } = require("socket.io");
+
+const { createServer } = require("node:http");
 const server = createServer(app);
+const { Server } = require("socket.io");
 const io = new Server(server);
+
 const path = require("path");
 const userRouter = require("./routes/userRoutes");
 const chatRoutes = require("./routes/chatRoutes");
@@ -15,7 +17,7 @@ const groupRoutes = require("./routes/groupRoutes");
 const placeRoutes = require("./routes/placeRoutes");
 const eventRoutes = require("./routes/eventRoutes");
 const messageRoutes = require("./routes/messageRoutes");
-const { Server } = require("http");
+
 const PORT = process.env.PORT || 4000;
 
 const app = express();
