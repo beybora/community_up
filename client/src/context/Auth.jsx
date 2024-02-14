@@ -21,7 +21,7 @@ function AuthProvider({ children }) {
 
   useEffect(() => {
     axios
-      .get("api/users/currentUser")
+      .get("/api/users/currentUser")
       .then((res) => {
         setLoading(false);
         setUser(res.data.user);
@@ -36,7 +36,7 @@ function AuthProvider({ children }) {
   const register = (user) => {
     setLoading(true);
     axios
-      .post("api/users/register", user)
+      .post("/api/users/register", user)
       .then((res) => {
         toast({
           title: "Successfully Registered!",
@@ -63,7 +63,7 @@ function AuthProvider({ children }) {
   const login = (user) => {
     // setLoading(true);
     axios
-      .post("api/users/login", user)
+      .post("/api/users/login", user)
       .then((res) => {
         toast({
           title: "Successfully Logged In!",
@@ -88,7 +88,7 @@ function AuthProvider({ children }) {
   };
 
   const logout = () => {
-    axios.post("api/users/logout", {}).then((res) => {
+    axios.post("/api/users/logout", {}).then((res) => {
       navigate("/");
       window.location.reload();
     });

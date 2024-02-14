@@ -82,7 +82,7 @@ const EditGroupModal = ({ group }) => {
 
   const handleDelete = () => {
     axios
-      .delete(`api/group/groups/${group._id}`)
+      .delete(`/api/group/groups/${group._id}`)
       .then(() => {
         toast({
           title: "Group Deleted Successfully!",

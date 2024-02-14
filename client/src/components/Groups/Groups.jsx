@@ -25,7 +25,7 @@ const Groups = () => {
       if (selectedCommunity) {
         try {
           const response = await axios.get(
-            `api/group/groups-by-community/${selectedCommunity._id}`
+            `/api/group/groups-by-community/${selectedCommunity._id}`
           );
           setGroups(response.data);
         } catch (error) {

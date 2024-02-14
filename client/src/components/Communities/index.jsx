@@ -31,7 +31,7 @@ const Communities = () => {
 
   const fetchAllCommunitiesByPlace = async () => {
     try {
-      const response = await axios.get("api/community/place");
+      const response = await axios.get("/api/community/place");
       setCommunities(response.data);
     } catch (error) {
       console.log("Error fetching joined communities", error);
@@ -48,7 +48,7 @@ const Communities = () => {
 
   const fetchJoinedCommunities = async () => {
     try {
-      const response = await axios.get("api/community/get-joined-communities");
+      const response = await axios.get("/api/community/get-joined-communities");
       setJoinedCommunities(response.data);
     } catch (error) {
       console.log("Error fetching joined communities", error);
@@ -67,7 +67,7 @@ const Communities = () => {
     setSelectedCommunity(community);
     navigate(`/community/${community._id}`);
     axios
-      .post(`api/community/join-community/${community._id}`)
+      .post(`/api/community/join-community/${community._id}`)
       .then((response) => {
         setFetchCommunities((prev) => !prev);
         toast({
@@ -93,7 +93,7 @@ const Communities = () => {
 
   const handleLeaveCommunity = (community) => {
     axios
-      .post(`api/community/leave-community/${community._id}`)
+      .post(`/api/community/leave-community/${community._id}`)
       .then((response) => {
         setFetchCommunities((prev) => !prev);
         toast({
