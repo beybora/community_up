@@ -14,12 +14,10 @@ const CommunityDescriptionBox = () => {
   console.log("selectedCommunity", selectedCommunity);
 
   useEffect(() => {
-    console.log("selectedCommunity", selectedCommunity);
-    console.log("user", user._id);
-    console.log("isAdmin", isAdmin);
+    console.log("selectedCommunity XXXX", selectedCommunity);
+    console.log("user XXXX", user);
     if (selectedCommunity && user) {
-      setIsAdmin(user.admin.includes(selectedCommunity._id));
-      console.log("isAdmin", isAdmin);
+      setIsAdmin(user.admin?.includes(selectedCommunity._id));
     }
 
   }, [selectedCommunity, user, fetchCommunities]);

@@ -34,7 +34,7 @@ const CreateGroupModal = () => {
 
   useEffect(() => {
     if (!selectedCommunity) {
-      navigate("/communities");
+      navigate("/");
       return;
     }
     socket.current = io(ENDPOINT, { transports: ["websocket"] });
