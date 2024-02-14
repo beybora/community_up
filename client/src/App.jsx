@@ -1,6 +1,6 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-import ChatPage from "./pages/ChatPage";
+import GroupsPage from "./pages/GroupsPage";
 import Authentication from "./pages/Authentication";
 import CommunitiesPage from "./pages/CommunitiesPage";
 import Protected from "./components/ProtectedRoute";
@@ -15,7 +15,7 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<Protected />}>
-            <Route path="community/:id" element={<ChatPage />} />
+            <Route path="community/:id" element={<GroupsPage />} />
             <Route path="" element={<CommunitiesPage />} />
             <Route path="*" element={<CommunitiesPage />} />
           </Route>
