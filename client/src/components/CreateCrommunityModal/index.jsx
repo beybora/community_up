@@ -30,7 +30,7 @@ const CreateCommunityModal = ({ children }) => {
   const [newCommunityPrivate, setNewCommunityPrivate] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
-  const { user, setFetchCommunities } = useContext(AuthContext);
+  const { user, setFetchCommunities, setCommunities, setFetchUser } = useContext(AuthContext);
 
   const socket = useRef(null);
 
@@ -64,6 +64,7 @@ const CreateCommunityModal = ({ children }) => {
         setNewCommunityDescription("");
         setNewCommunityName("");
         socket.current.emit("newCommunity", response.data);
+        setFetchUser((prev) => !prev);
         setFetchCommunities((prev) => !prev);
         toast({
           title: "New Community Created!",
