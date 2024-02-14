@@ -20,13 +20,13 @@ app.use(cookieParser());
 
 app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
 
-app.use("/users", userRouter);
-app.use("/chat", chatRoutes);
-app.use("/community", communtieRoutes);
-app.use("/group", groupRoutes);
-app.use("/places", placeRoutes);
-app.use("/events", eventRoutes);
-app.use("/messages", messageRoutes);
+app.use("/api/users", userRouter);
+app.use("/api/chat", chatRoutes);
+app.use("/api/community", communtieRoutes);
+app.use("/api/group", groupRoutes);
+app.use("/api/places", placeRoutes);
+app.use("/api/events", eventRoutes);
+app.use("/api/messages", messageRoutes);
 
 if (process.env.NODE_ENV === "production") {
   const buildPath = path.join(__dirname, "../client/dist");

@@ -61,7 +61,7 @@ const CreateCommunityModal = ({ children }) => {
     };
 
     axios
-      .post(`/community/create`, community)
+      .post(`api/community/create`, community)
       .then((response) => {
         setNewCommunityDescription("");
         setNewCommunityName("");

@@ -40,7 +40,7 @@ const SingleChat = () => {
 
     try {
       const fetchedMessaged = await axios.get(
-        `/messages/${selectedGroup.chat._id}`
+        `api/messages/${selectedGroup.chat._id}`
       );
       setLoading(false);
       setMessages(fetchedMessaged.data);
@@ -69,7 +69,7 @@ const SingleChat = () => {
       e.preventDefault();
 
       try {
-        const message = await axios.post("messages/send", {
+        const message = await axios.post("api/messages/send", {
           groupId: selectedGroup._id,
           senderId: user._id,
           content: newMessage,

@@ -52,7 +52,7 @@ const EditCommunityModal = ({ community }) => {
       return;
     }
     axios
-      .put(`/community/${community._id}`, {
+      .put(`api/community/${community._id}`, {
         name: communityName,
         description: communityDescription,
       })

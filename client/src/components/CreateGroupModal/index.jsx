@@ -53,7 +53,7 @@ const CreateGroupModal = () => {
       return;
     }
     axios
-      .post(`/group/groups/${selectedCommunity._id}`, {
+      .post(`api/group/groups/${selectedCommunity._id}`, {
         name: newGroupName,
         description: newGroupDescription,
       })
@@ -71,7 +71,7 @@ const CreateGroupModal = () => {
         socket.current.emit("newGroup", response.data);
         setFetchGroups((prev) => !prev);
         axios
-          .get(`/group/groups-by-community/${selectedCommunity._id}`)
+          .get(`api/group/groups-by-community/${selectedCommunity._id}`)
           .then((response) => {
             onClose();
           })

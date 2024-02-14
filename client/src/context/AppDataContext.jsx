@@ -21,7 +21,7 @@ function AppDataProvider({ children }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/places/places");
+        const response = await axios.get("api/places/places");
         setPlaces(response.data);
         setLoading(false);
       } catch (error) {
