@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
 const cookieParser = require("cookie-parser");
-const PORT = process.env.PORT || 4000;
+const path = require("path");
 const userRouter = require("./routes/userRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const communtieRoutes = require("./routes/communtieRoutes");
@@ -11,6 +11,7 @@ const groupRoutes = require("./routes/groupRoutes");
 const placeRoutes = require("./routes/placeRoutes");
 const eventRoutes = require("./routes/eventRoutes");
 const messageRoutes = require("./routes/messageRoutes");
+const PORT = process.env.PORT || 4000;
 
 const app = express();
 
@@ -26,6 +27,13 @@ app.use("/places", placeRoutes);
 app.use("/events", eventRoutes);
 app.use("/messages", messageRoutes);
 
+if (process.env.NODE_ENV === "production") {
+  const buildPath = path.join(__dirname, "../client/dist");
+  app.use(express.static(buildPath));
+
+  app.get("*", (req, res) => res.sendFile(path.join(buildPath, "index.html")));
+}
+
 connectDB()
   .then(() => {
     const server = app.listen(PORT, () => {
@@ -40,7 +48,7 @@ connectDB()
       },
     });
 
-    //create basic socket connection
+    //create basic socket connection     
     io.on("connection", (socket) => {
       socket.on("newMessage", (newMessageReceived) => {
         socket.broadcast.emit("messageReceived", newMessageReceived);
@@ -61,7 +69,6 @@ connectDB()
       socket.on("newCommunityUpdate", (newGroupUpdateReceived) => {
         socket.broadcast.emit("communityUpdated", newGroupUpdateReceived);
       });
-      
     });
   })
   .catch((error) => {
