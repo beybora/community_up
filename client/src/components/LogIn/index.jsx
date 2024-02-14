@@ -16,6 +16,7 @@ const Login = () => {
   const { login } = useContext(AuthContext);
 
   const submitHandler = (e) => {
+    e.preventDefault();
     // setLoading(true);
     if (!email || !password) {
       toast({
@@ -33,8 +34,7 @@ const Login = () => {
       password: password,
     };
 
-    e.preventDefault();
-    console.log(login(credentials));
+    login(credentials);
   };
 
   return (

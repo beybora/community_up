@@ -14,9 +14,10 @@ const Register = () => {
   const toast = useToast();
   const [formData, setFormData] = useState({
     username: "",
+    email: "",
     password: "",
     confirmPassword: "",
-    selectedPlace: "",
+    selectedPlace: "", // Store the ObjectId of the selected place
   });
 
   const { places } = useContext(AppDataContext);
@@ -27,6 +28,12 @@ const Register = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handlePlaceChange = (e) => {
+    const selectedPlaceId = e.target.value; 
+    console.log(selectedPlaceId);
+    setFormData({ ...formData, selectedPlace: selectedPlaceId }); 
   };
 
   const submitHandler = (e) => {
@@ -48,6 +55,7 @@ const Register = () => {
       isClosable: true,
       position: "bottom",
     });
+    console.log(formData);
     register(formData);
   };
 
@@ -116,13 +124,11 @@ const Register = () => {
           <Select
             placeholder="Select your place"
             value={formData.selectedPlace}
-            onChange={(e) =>
-              setFormData({ ...formData, selectedPlace: e.target.value })
-            }
+            onChange={handlePlaceChange} 
           >
             {places &&
               places.map((place) => (
-                <option key={place.id} value={place.id}>
+                <option key={place._id} value={place._id}>
                   {place.name}
                 </option>
               ))}

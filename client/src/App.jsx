@@ -5,12 +5,16 @@ import Authentication from "./pages/Authentication";
 import CommunitiesPage from "./pages/CommunitiesPage";
 import Protected from "./components/ProtectedRoute";
 import NavBar from "./components/NavBar/NavBar";
+import { AuthContext } from "./context/Auth";
+import { useContext } from "react";
 
 function App() {
+  const { user } = useContext(AuthContext);
+  
   return (
     <div className="App">
       <header>
-        <NavBar />
+       { user &&  <NavBar /> }
       </header>
       <main>
         <Routes>
