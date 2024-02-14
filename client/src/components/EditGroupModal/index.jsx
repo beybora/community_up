@@ -51,7 +51,7 @@ const EditGroupModal = ({ group }) => {
       return;
     }
     axios
-      .put(`/group/groups/${group._id}`, {
+      .put(`/api/group/groups/${group._id}`, {
         name: groupName,
         description: groupDescription,
       })
