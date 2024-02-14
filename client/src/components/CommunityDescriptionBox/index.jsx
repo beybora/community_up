@@ -2,7 +2,7 @@ import { React, useState, useContext, useEffect } from "react";
 import { Box, Text } from "@chakra-ui/layout";
 import { AuthContext } from "../../context/Auth";
 import ScrollableFeed from "react-scrollable-feed";
-import ReactHtmlParser from "react-html-parser";
+import parse from 'html-react-parser';
 import { Heading } from "@chakra-ui/react";
 import EditCommunityModal from "../EditCommunityModal";
 import { AppDataContext } from "../../context/AppDataContext";
@@ -46,7 +46,7 @@ const CommunityDescriptionBox = () => {
         <Box>
           <Text>
             {selectedCommunity ? (
-              ReactHtmlParser(selectedCommunity.description)
+              parse(selectedCommunity.description)
             ) : (
               <></>
             )}

@@ -3,7 +3,7 @@ import { Box, Text } from "@chakra-ui/layout";
 import { Heading, IconButton } from "@chakra-ui/react";
 import { ChatIcon } from "@chakra-ui/icons";
 
-import ReactHtmlParser from "react-html-parser";
+import parse from 'html-react-parser';
 import ScrollableFeed from "react-scrollable-feed";
 import { AppDataContext } from "../../context/AppDataContext";
 
@@ -41,7 +41,7 @@ const GroupDescriptionBox = () => {
       <ScrollableFeed>
         <Box mt="4rem">
           <Text>
-            {selectedGroup ? ReactHtmlParser(selectedGroup.description) : <></>}
+            {selectedGroup ? parse(selectedGroup.description) : <></>}
           </Text>
         </Box>
       </ScrollableFeed>
