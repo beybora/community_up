@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
 const cookieParser = require("cookie-parser");
-
+const app = express();
 const { createServer } = require("node:http");
 const server = createServer(app);
 const { Server } = require("socket.io");
@@ -20,7 +20,7 @@ const messageRoutes = require("./routes/messageRoutes");
 
 const PORT = process.env.PORT || 4000;
 
-const app = express();
+
 
 app.use(express.json());
 app.use(cookieParser());
