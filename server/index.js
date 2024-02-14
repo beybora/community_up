@@ -28,12 +28,12 @@ app.use("/places", placeRoutes);
 app.use("/events", eventRoutes);
 app.use("/messages", messageRoutes);
 
-// if (process.env.NODE_ENV === "production") {
-//   const buildPath = path.join(__dirname, "../client/dist");
-//   app.use(express.static(buildPath));
+if (process.env.NODE_ENV === "production") {
+  const buildPath = path.join(__dirname, "../client/dist");
+  app.use(express.static(buildPath));
 
-//   app.get("*", (req, res) => res.sendFile(path.join(buildPath, "index.html")));
-// }
+  app.get("*", (req, res) => res.sendFile(path.join(buildPath, "index.html")));
+}
 
 connectDB()
   .then(() => {
