@@ -4,6 +4,13 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 const cookieParser = require("cookie-parser");
 const path = require("path");
+const io = require("socket.io")(server, {
+  pingTimeout: 60000,
+  cors: {
+    cors: true,
+    origin: process.env.FRONTEND_URL,
+  },
+});
 const userRouter = require("./routes/userRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const communtieRoutes = require("./routes/communtieRoutes");
@@ -40,15 +47,7 @@ connectDB()
       console.log(`Server is up on port ${PORT}`);
     });
 
-    const io = require("socket.io")(server, {
-      pingTimeout: 60000,
-      cors: {
-        cors: true,
-        origin: process.env.FRONTEND_URL,
-      },
-    });
-
-    //create basic socket connection     
+    //create basic socket connection
     io.on("connection", (socket) => {
       socket.on("newMessage", (newMessageReceived) => {
         socket.broadcast.emit("messageReceived", newMessageReceived);
