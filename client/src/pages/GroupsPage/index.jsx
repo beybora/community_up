@@ -1,13 +1,14 @@
 import { React, useContext, useEffect } from "react";
 import { Box } from "@chakra-ui/react";
 import GroupDescriptionBox from "../../components/GroupDescriptionBox";
-import MyGroups from "../../components/MyGroups/MyGroups";
-import NavBar from "../../components/NavBar/NavBar";
+import Groups from "../../components/Groups/Groups";
 import { AuthContext } from "../../context/Auth";
 import ChatBox from "../../components/ChatBox/ChatBox";
+import { AppDataContext } from "../../context/AppDataContext";
 
-const ChatPage = () => {
-  const { user, joinGroupChat, setJoinGroupChat } = useContext(AuthContext);
+const GroupsPage = () => {
+  const { joinGroupChat, setJoinGroupChat } = useContext(AppDataContext);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     return () => {
@@ -17,7 +18,6 @@ const ChatPage = () => {
 
   return (
     <div style={{ width: "100%" }}>
-      {user && <NavBar />}
       <Box
         display="flex"
         justifyContent="space-between"
@@ -25,7 +25,7 @@ const ChatPage = () => {
         h="91.5vh"
         padding="15px"
       >
-        {user && <MyGroups />}
+        {user && <Groups />}
         {user && !joinGroupChat && <GroupDescriptionBox />}
         {joinGroupChat && <ChatBox />}
       </Box>
@@ -33,4 +33,4 @@ const ChatPage = () => {
   );
 };
 
-export default ChatPage;
+export default GroupsPage;

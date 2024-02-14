@@ -1,16 +1,14 @@
-import { React, useState, useContext, useEffect } from "react";
-import { AuthContext } from "../../context/Auth";
+import { React, useContext, useEffect } from "react";
 import axios from "../../axiosinstance";
-import { AddIcon, EditIcon } from "@chakra-ui/icons";
 import { Box, Stack, Text } from "@chakra-ui/layout";
-import { useToast } from "@chakra-ui/toast";
 import { IconButton } from "@chakra-ui/react";
 import CreateGroupModal from "../CreateGroupModal";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
 import EditGroupModal from "../EditGroupModal";
+import { AppDataContext } from "../../context/AppDataContext";
 
-const MyGroups = ({}) => {
+const Groups = () => {
   const {
     setSelectedGroup,
     fetchGroups,
@@ -18,7 +16,8 @@ const MyGroups = ({}) => {
     groups,
     setGroups,
     selectedGroup,
-  } = useContext(AuthContext);
+  } = useContext(AppDataContext);
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -107,4 +106,4 @@ const MyGroups = ({}) => {
   );
 };
 
-export default MyGroups;
+export default Groups;

@@ -1,11 +1,11 @@
 import { React, useState, useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../../axiosinstance";
-import { AuthContext } from "../../context/Auth";
 import { io } from "socket.io-client";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 const ENDPOINT = import.meta.env.VITE_SERVER_BASE_URL;
+import { AppDataContext } from "../../context/AppDataContext";
 import {
   Modal,
   ModalOverlay,
@@ -30,7 +30,7 @@ const CreateGroupModal = () => {
   const socket = useRef(null);
 
   const { groups, setGroups, selectedCommunity, setFetchGroups } =
-    useContext(AuthContext);
+    useContext(AppDataContext);
 
   useEffect(() => {
     if (!selectedCommunity) {
@@ -48,7 +48,7 @@ const CreateGroupModal = () => {
         status: "warning",
         duration: 1000,
         isClosable: true,
-        position: "top",
+        position: "bottom",
       });
       return;
     }
@@ -65,7 +65,7 @@ const CreateGroupModal = () => {
           status: "success",
           duration: 2000,
           isClosable: true,
-          position: "top",
+          position: "bottom",
         });
         setGroups([response.data, ...groups]);
         socket.current.emit("newGroup", response.data);
@@ -135,8 +135,8 @@ const CreateGroupModal = () => {
                 height: "10rem",
                 marginBottom: "5rem",
               }}
-              theme="snow" // specify the theme (snow is a clean theme)
-              value={newGroupDescription} // bind the content state to the value of the editor
+              theme="snow"
+              value={newGroupDescription} 
               onChange={handleTextEditorChange}
             />
           </FormControl>

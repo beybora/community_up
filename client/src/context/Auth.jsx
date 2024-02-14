@@ -9,6 +9,7 @@ function AuthProvider({ children }) {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [fetchUser, setFetchUser] = useState(false);
   const [errors, setErrors] = useState(null);
   const toast = useToast();
 
@@ -17,19 +18,6 @@ function AuthProvider({ children }) {
     setLoading(loading);
     setErrors(errors);
   };
-
-  const [fetchUser, setFetchUser] = useState(false);
-  const [selectedChat, setSelectedChat] = useState();
-  const [notification, setNotification] = useState([]);
-  const [chats, setChats] = useState([]);
-  const [groups, setGroups] = useState([]);
-  const [selectedGroup, setSelectedGroup] = useState();
-  const [communities, setCommunities] = useState([]);
-  const [fetchCommunities, setFetchCommunities] = useState(false);
-  const [fetchGroups, setFetchGroups] = useState(false);
-  const [selectedCommunity, setSelectedCommunity] = useState();
-  const [joinedCommunities, setJoinedCommunities] = useState([]);
-  const [joinGroupChat, setJoinGroupChat] = useState(false);
 
   useEffect(() => {
     axios
@@ -113,30 +101,8 @@ function AuthProvider({ children }) {
         login,
         logout,
         loading,
-        selectedChat,
-        setSelectedChat,
         user,
         setUser,
-        notification,
-        setNotification,
-        chats,
-        setChats,
-        communities,
-        setCommunities,
-        selectedCommunity,
-        setSelectedCommunity,
-        fetchCommunities,
-        setFetchCommunities,
-        joinedCommunities,
-        setJoinedCommunities,
-        joinGroupChat,
-        setJoinGroupChat,
-        groups,
-        setGroups,
-        selectedGroup,
-        setSelectedGroup,
-        fetchGroups,
-        setFetchGroups,
         fetchUser,
         setFetchUser,
       }}

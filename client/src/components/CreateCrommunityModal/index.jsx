@@ -1,6 +1,5 @@
 import { React, useState, useContext, useRef, useEffect } from "react";
 import axios from "../../axiosinstance";
-import { AuthContext } from "../../context/Auth";
 import io from "socket.io-client";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -21,8 +20,9 @@ import {
   useToast,
   Input,
   Switch,
-  Textarea,
 } from "@chakra-ui/react";
+import { AppDataContext } from "../../context/AppDataContext";
+import { AuthContext } from "../../context/Auth";
 
 const CreateCommunityModal = ({ children }) => {
   const [newCommunityName, setNewCommunityName] = useState("");
@@ -30,8 +30,10 @@ const CreateCommunityModal = ({ children }) => {
   const [newCommunityPrivate, setNewCommunityPrivate] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
-  const { user, setFetchCommunities, setCommunities, setFetchUser } = useContext(AuthContext);
 
+  const { setFetchCommunities } = useContext(AppDataContext);
+  const { setFetchUser } = useContext(AuthContext);
+  
   const socket = useRef(null);
 
   useEffect(() => {
@@ -47,7 +49,7 @@ const CreateCommunityModal = ({ children }) => {
         status: "warning",
         duration: 1000,
         isClosable: true,
-        position: "top",
+        position: "bottom",
       });
       return;
     }
@@ -71,7 +73,7 @@ const CreateCommunityModal = ({ children }) => {
           status: "success",
           duration: 2000,
           isClosable: true,
-          position: "top",
+          position: "bottomtom",
         });
         onClose();
       })
@@ -88,7 +90,6 @@ const CreateCommunityModal = ({ children }) => {
   };
 
   const handleTextEditorChange = (value) => {
-    console.log(value, "value");
     setNewCommunityDescription(value);
   };
 

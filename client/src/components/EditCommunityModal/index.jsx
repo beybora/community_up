@@ -2,9 +2,10 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import axios from "../../axiosinstance";
 import { io } from "socket.io-client";
 import ReactQuill from "react-quill";
-import { AuthContext } from "../../context/Auth";
 import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 import { useToast } from "@chakra-ui/toast";
+import { AppDataContext } from "../../context/AppDataContext";
+const ENDPOINT = import.meta.env.VITE_SERVER_BASE_URL;
 import {
   Modal,
   ModalOverlay,
@@ -19,7 +20,6 @@ import {
   useDisclosure,
   Input,
 } from "@chakra-ui/react";
-const ENDPOINT = import.meta.env.VITE_SERVER_BASE_URL;
 
 const EditCommunityModal = ({ community }) => {
   const [communityName, setCommunityName] = useState(community.name);
@@ -30,7 +30,7 @@ const EditCommunityModal = ({ community }) => {
   const toast = useToast();
   const socket = useRef(null);
 
-  const { setFetchCommunities, setSelectedCommunity, communities } = useContext(AuthContext);
+  const { setFetchCommunities } = useContext(AppDataContext);
 
   useEffect(() => {
     socket.current = io(ENDPOINT, { transports: ["websocket"] });
@@ -47,7 +47,7 @@ const EditCommunityModal = ({ community }) => {
         status: "warning",
         duration: 1000,
         isClosable: true,
-        position: "top",
+        position: "bottom",
       });
       return;
     }
@@ -62,7 +62,7 @@ const EditCommunityModal = ({ community }) => {
           status: "success",
           duration: 2000,
           isClosable: true,
-          position: "top",
+          position: "bottom",
         });
         onClose();
         handleCommunityUpdated();
@@ -90,7 +90,7 @@ const EditCommunityModal = ({ community }) => {
           status: "success",
           duration: 2000,
           isClosable: true,
-          position: "top",
+          position: "bottom",
         });
         onClose();
         handleCommunityUpdated();

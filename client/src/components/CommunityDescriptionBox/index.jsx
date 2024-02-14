@@ -4,22 +4,19 @@ import { AuthContext } from "../../context/Auth";
 import ScrollableFeed from "react-scrollable-feed";
 import ReactHtmlParser from "react-html-parser";
 import { Heading } from "@chakra-ui/react";
-
-import { Icon } from "@chakra-ui/react";
 import EditCommunityModal from "../EditCommunityModal";
+import { AppDataContext } from "../../context/AppDataContext";
 
 const CommunityDescriptionBox = () => {
-  const { user, selectedCommunity, fetchCommunities } = useContext(AuthContext);
   const [isAdmin, setIsAdmin] = useState(false);
-  console.log("selectedCommunity", selectedCommunity);
+
+  const { user } = useContext(AuthContext);
+  const { selectedCommunity, fetchCommunities } = useContext(AppDataContext);
 
   useEffect(() => {
-    console.log("selectedCommunity XXXX", selectedCommunity);
-    console.log("user XXXX", user);
     if (selectedCommunity && user) {
       setIsAdmin(user.admin?.includes(selectedCommunity._id));
     }
-
   }, [selectedCommunity, user, fetchCommunities]);
 
   return (
