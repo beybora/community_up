@@ -1,10 +1,7 @@
-import { useNavigate } from "react-router-dom";
-import React, { useEffect, useState, useContext } from "react";
+import React from "react";
 import Login from "../../components/LogIn";
 import Register from "../../components/Register";
-import { AuthContext } from "../../context/Auth";
 import Logo from "../../assets/logo.png";
-
 import {
   Box,
   Container,
@@ -13,18 +10,9 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Text,
 } from "@chakra-ui/react";
 
 const Authentication = () => {
-  const { user } = useContext(AuthContext);
-  const [isLoginTab, setLoginTab] = useState(true);
-  const navigate = useNavigate();
-
-  const handleTabChange = () => {
-    setLoginTab(!isLoginTab);
-  };
-
   return (
     <Container maxW="xl" centerContent>
       <Box

@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { Box } from "@chakra-ui/react";
-import NavBar from "../../components/NavBar/NavBar";
 import { AuthContext } from "../../context/Auth";
 import Communities from "../../components/Communities";
 import CommunityDescriptionBox from "../../components/CommunityDescriptionBox";
