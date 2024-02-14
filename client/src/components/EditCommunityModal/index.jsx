@@ -30,7 +30,7 @@ const EditCommunityModal = ({ community }) => {
   const toast = useToast();
   const socket = useRef(null);
 
-  const { setFetchCommunities } = useContext(AuthContext);
+  const { setFetchCommunities, setSelectedCommunity, communities } = useContext(AuthContext);
 
   useEffect(() => {
     socket.current = io(ENDPOINT, { transports: ["websocket"] });

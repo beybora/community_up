@@ -3,7 +3,6 @@ const router = express.Router();
 const placeController = require("../controllers/placeController");
 const authenticate = require("../middleware/auth");
 
-// Define routes
 
 router.get("/places", placeController.getAllPlaces);
 router.use(authenticate);

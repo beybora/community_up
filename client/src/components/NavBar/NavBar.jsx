@@ -11,18 +11,30 @@ import {
   MenuItem,
   MenuDivider,
 } from "@chakra-ui/react";
-import { ChevronDownIcon, BellIcon, HamburgerIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, BellIcon } from "@chakra-ui/icons";
 import { AuthContext } from "../../context/Auth";
 import axios from "../../axiosinstance";
+import ProfileModal from "../ProfileModal";
+import Logo from "../../assets/logo.png";
+
 
 function NavBar() {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  const [isProfileModalOpen, setIsProfileModalOpen] = React.useState(false);
+
+  const openProfileModal = () => {
+    setIsProfileModalOpen(true);
+  };
+
+  const closeProfileModal = () => {
+    setIsProfileModalOpen(false);
+  };
+
   const logoutHandler = async () => {
     try {
-      await axios.post("/users/logout");
-      navigate("/");
+      await logout(); // Using the logout function from AuthContext
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -38,7 +50,9 @@ function NavBar() {
       padding="5px 10px 5px 10px"
       borderColor={"darkgreen"}
     >
-      <Text fontSize="2xl">Community Up</Text>
+       <Box>
+        <img src={Logo} alt="Logo" style={{ height: "50px", width: "auto" }} />
+      </Box>
       <Box display="flex" gap="10px">
         <Menu>
           <MenuButton>
@@ -55,18 +69,15 @@ function NavBar() {
             />
           </MenuButton>
           <MenuList>
-            <MenuItem
-              onClick={() => {
-                /* Handle profile click */
-              }}
-            >
-              My Profile
-            </MenuItem>
+            <MenuItem onClick={openProfileModal}>My Profile</MenuItem>
             <MenuDivider />
             <MenuItem onClick={logoutHandler}>Logout</MenuItem>
           </MenuList>
         </Menu>
       </Box>
+      {user && (
+        <ProfileModal isOpen={isProfileModalOpen} onClose={closeProfileModal} />
+      )}
     </Box>
   );
 }
