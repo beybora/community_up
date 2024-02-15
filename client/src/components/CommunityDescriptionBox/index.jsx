@@ -23,9 +23,9 @@ const CommunityDescriptionBox = () => {
   return (
     <Box
       display={{ base: selectedCommunity ? "flex" : "none", md: "flex" }}
-      alignItems="center"
+      alignItems="start"
       flexDir="column"
-      p={3}
+      padding={5}
       bg="white"
       width={{ base: "100%", md: "68%" }}
       borderRadius="lg"
@@ -52,15 +52,11 @@ const CommunityDescriptionBox = () => {
       ) : (
         <Heading size="md">Select a community to view its description</Heading>
       )}
-      <ScrollableFeed>
-        <Box>
-          <Text>
-            {selectedCommunity ? parse(selectedCommunity.description) : <></>}
-          </Text>
-
-          <Text></Text>
-        </Box>
-      </ScrollableFeed>
+      <Box mt="2rem">
+        <Text>
+          {selectedCommunity ? parse(selectedCommunity.description) : <></>}
+        </Text>
+      </Box>
     </Box>
   );
 };
