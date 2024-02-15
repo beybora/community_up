@@ -2,16 +2,17 @@ import { React, useState, useContext, useEffect } from "react";
 import { Box, Text } from "@chakra-ui/layout";
 import { AuthContext } from "../../context/Auth";
 import ScrollableFeed from "react-scrollable-feed";
-import parse from 'html-react-parser';
-import { Heading } from "@chakra-ui/react";
+import { ArrowBackIcon } from "@chakra-ui/icons";
+import parse from "html-react-parser";
+import { Heading, IconButton } from "@chakra-ui/react";
 import EditCommunityModal from "../EditCommunityModal";
 import { AppDataContext } from "../../context/AppDataContext";
 
 const CommunityDescriptionBox = () => {
   const [isAdmin, setIsAdmin] = useState(false);
-
   const { user } = useContext(AuthContext);
-  const { selectedCommunity, fetchCommunities } = useContext(AppDataContext);
+  const { selectedCommunity, fetchCommunities, setSelectedCommunity } =
+    useContext(AppDataContext);
 
   useEffect(() => {
     if (selectedCommunity && user) {
@@ -32,11 +33,20 @@ const CommunityDescriptionBox = () => {
     >
       {selectedCommunity ? (
         <Box display="flex" justifyContent="space-between" width="100%">
-          {isAdmin ? (
-            <EditCommunityModal community={selectedCommunity} />
-          ) : (
-            <div> </div>
-          )}
+          <Box display="flex" gap="0.5rem">
+            <IconButton
+              d={{ base: "flex", md: "none" }}
+              icon={<ArrowBackIcon />}
+              onClick={() => {
+                setSelectedCommunity(null);
+              }}
+            />
+            {isAdmin ? (
+              <EditCommunityModal community={selectedCommunity} />
+            ) : (
+              <div> </div>
+            )}
+          </Box>
           <Heading size="lg"> {selectedCommunity.name}</Heading>{" "}
         </Box>
       ) : (
@@ -45,11 +55,7 @@ const CommunityDescriptionBox = () => {
       <ScrollableFeed>
         <Box>
           <Text>
-            {selectedCommunity ? (
-              parse(selectedCommunity.description)
-            ) : (
-              <></>
-            )}
+            {selectedCommunity ? parse(selectedCommunity.description) : <></>}
           </Text>
 
           <Text></Text>
