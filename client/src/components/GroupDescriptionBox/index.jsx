@@ -1,4 +1,4 @@
-import { React, useContext,useEffect } from "react";
+import { React, useContext, useEffect } from "react";
 import { Box, Text } from "@chakra-ui/layout";
 import { Heading, IconButton } from "@chakra-ui/react";
 import { ChatIcon, ArrowBackIcon } from "@chakra-ui/icons";
@@ -8,11 +8,8 @@ import { AppDataContext } from "../../context/AppDataContext";
 const GroupDescriptionBox = () => {
   const { selectedGroup, setJoinGroupChat, setSelectedGroup } =
     useContext(AppDataContext);
-  useEffect(() => {
-    return () => {
-      setSelectedGroup(null);
-    };
-  }, [setSelectedGroup]);
+ 
+
   return (
     <Box
       display={{ base: selectedGroup ? "flex" : "none", md: "flex" }}
@@ -49,11 +46,16 @@ const GroupDescriptionBox = () => {
       ) : (
         <Heading size="md">Select a group to view its description</Heading>
       )}
-      
-        <Box mt="2rem">
-          <Text>{selectedGroup ? selectedGroup.description : <></>}</Text>
-        </Box>
-    
+
+      <Box mt="2rem">
+        {selectedGroup ? (
+          <Text
+            dangerouslySetInnerHTML={{ __html: selectedGroup.description }}
+          />
+        ) : (
+          <></>
+        )}
+      </Box>
     </Box>
   );
 };

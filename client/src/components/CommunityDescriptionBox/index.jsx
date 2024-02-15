@@ -51,9 +51,13 @@ const CommunityDescriptionBox = () => {
         <Heading size="md">Select a community to view its description</Heading>
       )}
       <Box mt="2rem">
-        <Text>
-          {selectedCommunity ? selectedCommunity.description : <></>}
-        </Text>
+        {selectedCommunity ? (
+          <Text
+            dangerouslySetInnerHTML={{ __html: selectedCommunity.description }}
+          />
+        ) : (
+           <></>
+        )}
       </Box>
     </Box>
   );
