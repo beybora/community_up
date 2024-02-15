@@ -4,21 +4,19 @@ import { Box, Stack, Text } from "@chakra-ui/layout";
 import { IconButton } from "@chakra-ui/react";
 import CreateGroupModal from "../CreateGroupModal";
 import { ArrowBackIcon } from "@chakra-ui/icons";
-import { useNavigate } from "react-router-dom";
 import EditGroupModal from "../EditGroupModal";
 import { AppDataContext } from "../../context/AppDataContext";
 
 const Groups = () => {
   const {
     setSelectedGroup,
+    setSelectedCommunity,
     fetchGroups,
     selectedCommunity,
     groups,
     setGroups,
     selectedGroup,
   } = useContext(AppDataContext);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchGroupsByCommunity = async () => {
@@ -60,8 +58,9 @@ const Groups = () => {
           d={{ base: "flex", md: "none" }}
           icon={<ArrowBackIcon />}
           onClick={() => {
-            navigate(-1);
-            setGroups([]);
+            setSelectedGroup(null);
+            setSelectedCommunity(null);
+            
           }}
         />
         <CreateGroupModal />

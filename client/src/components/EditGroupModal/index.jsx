@@ -29,7 +29,7 @@ const EditGroupModal = ({ group }) => {
   const toast = useToast();
   const socket = useRef(null);
 
-  const { setFetchGroups } = useContext(AppDataContext);
+  const { setFetchGroups, setSelectedGroup } = useContext(AppDataContext);
 
   useEffect(() => {
     socket.current = io(ENDPOINT, { transports: ["websocket"] });
@@ -92,6 +92,7 @@ const EditGroupModal = ({ group }) => {
           position: "bottom",
         });
         onClose();
+        setSelectedGroup(null);
         handleGroupUpdated();
       })
       .catch((error) => {

@@ -30,7 +30,7 @@ const EditCommunityModal = ({ community }) => {
   const toast = useToast();
   const socket = useRef(null);
 
-  const { setFetchCommunities } = useContext(AppDataContext);
+  const { setFetchCommunities, setSelectedCommunity } = useContext(AppDataContext);
 
   useEffect(() => {
     socket.current = io(ENDPOINT, { transports: ["websocket"] });
@@ -83,7 +83,7 @@ const EditCommunityModal = ({ community }) => {
 
   const handleDelete = () => {
     axios
-      .delete(`/community/${community._id}`)
+      .delete(`/api/community/${community._id}`)
       .then(() => {
         toast({
           title: "Community Deleted Successfully!",
@@ -93,6 +93,7 @@ const EditCommunityModal = ({ community }) => {
           position: "bottom",
         });
         onClose();
+        setSelectedCommunity(null);
         handleCommunityUpdated();
       })
       .catch((error) => {
