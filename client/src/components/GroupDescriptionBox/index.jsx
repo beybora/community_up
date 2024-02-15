@@ -1,18 +1,24 @@
-import { React, useContext } from "react";
+import { React, useContext,useEffect } from "react";
 import { Box, Text } from "@chakra-ui/layout";
 import { Heading, IconButton } from "@chakra-ui/react";
-import { ChatIcon,ArrowBackIcon } from "@chakra-ui/icons";
+import { ChatIcon, ArrowBackIcon } from "@chakra-ui/icons";
 
 import parse from "html-react-parser";
 import ScrollableFeed from "react-scrollable-feed";
 import { AppDataContext } from "../../context/AppDataContext";
 
 const GroupDescriptionBox = () => {
-  const { selectedGroup, setJoinGroupChat, setSelectedGroup } = useContext(AppDataContext);
-
+  const { selectedGroup, setJoinGroupChat, setSelectedGroup } =
+    useContext(AppDataContext);
+  useEffect(() => {
+    return () => {
+      setSelectedGroup(null);
+    };
+  }, [setSelectedGroup]);
   return (
     <Box
       display={{ base: selectedGroup ? "flex" : "none", md: "flex" }}
+      alignItems="start"
       flexDir="column"
       padding={5}
       bg="white"
@@ -45,13 +51,11 @@ const GroupDescriptionBox = () => {
       ) : (
         <Heading size="md">Select a group to view its description</Heading>
       )}
-      <ScrollableFeed>
-        <Box mt="4rem">
-          <Text>
-            {selectedGroup ? parse(selectedGroup.description) : <></>}
-          </Text>
+      
+        <Box mt="2rem">
+          <Text>{selectedGroup ? parse(selectedGroup.description) : <></>}</Text>
         </Box>
-      </ScrollableFeed>
+    
     </Box>
   );
 };
