@@ -1,9 +1,7 @@
 import { React, useState, useContext, useEffect } from "react";
 import { Box, Text } from "@chakra-ui/layout";
 import { AuthContext } from "../../context/Auth";
-import ScrollableFeed from "react-scrollable-feed";
 import { ArrowBackIcon } from "@chakra-ui/icons";
-import parse from "html-react-parser";
 import { Heading, IconButton } from "@chakra-ui/react";
 import EditCommunityModal from "../EditCommunityModal";
 import { AppDataContext } from "../../context/AppDataContext";
@@ -54,7 +52,7 @@ const CommunityDescriptionBox = () => {
       )}
       <Box mt="2rem">
         <Text>
-          {selectedCommunity ? parse(selectedCommunity.description) : <></>}
+          {selectedCommunity ? selectedCommunity.description : <></>}
         </Text>
       </Box>
     </Box>
